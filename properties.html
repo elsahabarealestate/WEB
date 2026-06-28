@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <script src="security.js" defer></script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>كل الوحدات — الصحابة للعقارات</title>
+  <meta name="description" content="استعرض جميع الوحدات والعقارات المتاحة لدى مجموعة الصحابة العقارية مع التصفية الذكية." />
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png"
+    href="https://res.cloudinary.com/daicsoapy/image/upload/q_auto/f_auto/v1777700276/%D8%B9%D9%88%D8%A7%D9%85%D9%8A%D8%AF_%D9%85%D8%B3%D8%AC%D8%AF_mjkb1u.png" />
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800;900&family=Cairo:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet" />
+
+  <!-- Swiper -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+
+  <!-- FontAwesome -->
+  <link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+
+  <!-- Shared styles -->
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- ════════════════════════════════════════
+       LOADER
+  ════════════════════════════════════════ -->
+  <div id="loader" role="status" aria-label="جارٍ التحميل">
+    <img class="loader-logo"
+      src="https://res.cloudinary.com/daicsoapy/image/upload/q_auto/f_auto/v1777700851/Picture5_i6btgv.gif"
+      alt="شعار الصحابة" />
+    <p class="loader-status" id="loader-status">جارٍ تحميل الوحدات…</p>
+    <div class="loader-bar">
+      <div class="loader-bar-fill" id="loader-fill"></div>
+    </div>
+  </div>
+
+
+  <!-- ════════════════════════════════════════
+       NAVIGATION
+  ════════════════════════════════════════ -->
+  <nav id="main-nav" role="navigation">
+    <div class="nav-logo">
+      <a href="index.html">
+        <img src="https://res.cloudinary.com/daicsoapy/image/upload/q_auto/f_auto/v1777700851/Picture5_i6btgv.gif"
+             alt="الصحابة للعقارات" />
+      </a>
+    </div>
+
+    <ul class="nav-center">
+      <li><a href="index.html">الرئيسية </a></li>
+      <li><a href="index.html#properties">وحداتنا المميزة</a></li>
+      <li><a href="aerid-aqarak.html">اعرض عقارك معنا</a></li>
+      <li><a href="index.html#why">لماذا الصحابة؟</a></li>
+      <li><a href="index.html#testimonials">آراء العملاء</a></li>
+      <li><a href="index.html#contact">تواصل معنا</a></li>
+    </ul>
+
+    <div class="nav-right">
+      <div class="nav-social">
+        <a href="https://www.facebook.com/profile.php?id=61589100016014" aria-label="فيسبوك"   target="_blank" rel="noopener"><i class="fab fa-facebook-f"></i></a>
+        <a href="https://www.instagram.com/elsahaba.real.estate/" aria-label="إنستغرام" target="_blank" rel="noopener"><i class="fab fa-instagram"></i></a>
+        <a href="https://www.tiktok.com/@elsahaba.real.estate" aria-label="تيك توك"    target="_blank" rel="noopener"><i class="fab fa-tiktok"></i></a>
+      </div>
+      <a href="https://linktr.ee/elsahabarealestate" class="btn-linktree" target="_blank" rel="noopener">
+        <i class="fas fa-link"></i>
+        <span>روابطنا</span>
+      </a>
+      <a href="index.html#contact" class="nav-cta">احجز معاينة</a>
+      <button class="hamburger" id="hamburger" aria-label="فتح القائمة">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Mobile nav -->
+  <div class="mobile-overlay" id="mobile-overlay"></div>
+  <nav class="mobile-nav" id="mobile-nav">
+    <button class="mobile-close" id="mobile-close">✕</button>
+    <ul>
+      <li><a href="index.html"  onclick="closeMobileNav()">الرئيسية </a></li>
+      <li><a href="index.html#properties"  onclick="closeMobileNav()">العقارات المميزة</a></li>
+      <li><a href="aerid-aqarak.html"     onclick="closeMobileNav()">اعرض عقارك معنا</a></li>
+      <li><a href="index.html#why"         onclick="closeMobileNav()">لماذا الصحابة؟</a></li>
+      <li><a href="index.html#testimonials" onclick="closeMobileNav()">آراء العملاء</a></li>
+      <li><a href="index.html#contact"     onclick="closeMobileNav()">تواصل معنا</a></li>
+    </ul>
+    <div class="mobile-social">
+      <a href="https://www.facebook.com/profile.php?id=61589100016014" aria-label="فيسبوك"   target="_blank" rel="noopener"><i class="fab fa-facebook-f"></i></a>
+      <a href="https://www.instagram.com/elsahaba.real.estate/" aria-label="إنستغرام" target="_blank" rel="noopener"><i class="fab fa-instagram"></i></a>
+      <a href="https://www.tiktok.com/@elsahaba.real.estate" aria-label="تيك توك"    target="_blank" rel="noopener"><i class="fab fa-tiktok"></i></a>
+    </div>
+  </nav>
+
+
+  <!-- ════════════════════════════════════════
+       PAGE HERO
+  ════════════════════════════════════════ -->
+  <header class="page-hero-mini" aria-label="عنوان الصفحة">
+    <span class="section-label" style="display:block;margin-bottom:12px;">الصحابة العقارية</span>
+    <h1>جميع <span style="color:var(--gold)">الوحدات</span> المتاحة</h1>
+    <p>استعرض كامل محفظتنا العقارية واختر الوحدة التي تناسب احتياجاتك وميزانيتك</p>
+  </header>
+
+
+  <!-- ════════════════════════════════════════
+       FILTER BAR
+  ════════════════════════════════════════ -->
+  <div class="filter-bar-wrap" id="filter-bar">
+    <div class="filter-inner">
+
+      <!-- Category + Listing Chips -->
+      <div class="filter-group">
+        <span class="filter-label">التصنيف</span>
+        <div class="filter-chips" id="filter-chips">
+  <!-- Injected dynamically by taxonomy.js -->
+        </div>
+      </div>
+
+      <!-- Dropdown Filters -->
+      <div class="filter-dropdowns">
+        <div class="filter-select-wrap">
+          <label for="filter-sort">الترتيب</label>
+          <select id="filter-sort" onchange="window.ElSahabaFilters.setSort(this.value)">
+            <option value="">الافتراضي</option>
+            <option value="price_asc">السعر: الأقل للأعلى</option>
+            <option value="price_desc">السعر: الأعلى للأقل</option>
+          </select>
+        </div>
+
+        <div class="filter-select-wrap">
+          <label for="filter-city">المدينة</label>
+          <select id="filter-city" onchange="window.ElSahabaFilters.setCity(this.value)">
+  <option value="">كل المدن</option>
+  <!-- options injected by taxonomy.js -->
+           </select>
+        </div>
+
+        <div class="filter-select-wrap">
+          <label for="filter-district">المنطقة</label>
+          <select id="filter-district" onchange="window.ElSahabaFilters.setDistrict(this.value)">
+  <option value="">كل المناطق</option>
+  <!-- options injected by taxonomy.js -->
+           </select>
+        </div>
+
+        <div class="filter-select-wrap">
+          <label for="filter-status">حالة التشطيب</label>
+          <select id="filter-status" onchange="window.ElSahabaFilters.setStatus(this.value)">
+  <option value="">الكل</option>
+  <!-- options injected by taxonomy.js -->
+           </select>
+        </div>
+
+        <div class="filter-select-wrap">
+          <label for="filter-detail">نوع الوحدة</label>
+          <select id="filter-detail" onchange="window.ElSahabaFilters.setDetail(this.value)">
+  <option value="">الكل</option>
+  <!-- options injected by taxonomy.js -->
+           </select>
+        </div>
+
+        <div class="filter-select-wrap">
+          <label for="filter-rooms">الغرف</label>
+          <select id="filter-rooms" onchange="window.ElSahabaFilters.setRooms(this.value)">
+  <option value="">الكل</option>
+  <!-- options injected by taxonomy.js -->
+            </select>
+        </div>
+
+        <button class="filter-reset" onclick="window.ElSahabaFilters.resetAll()">
+          <i class="fas fa-rotate-right"></i> إعادة ضبط
+        </button>
+      </div>
+
+      <!-- Result count -->
+      <div class="filter-meta">
+        <span id="result-count">جارٍ التحميل…</span>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ════════════════════════════════════════
+       PROPERTIES GRID + SKELETON LOADER
+  ════════════════════════════════════════ -->
+  <section class="props-page-section" aria-label="كل الوحدات">
+    <div class="section-inner">
+      <!-- Skeleton loader (shown while fetching) -->
+      <div class="skeleton-grid" id="skeleton-grid">
+        <div class="skeleton-card"><div class="skeleton-img"></div><div class="skeleton-body"><div class="skeleton-title"></div><div class="skeleton-line"></div><div class="skeleton-line short"></div><div class="skeleton-footer"></div></div></div>
+        <div class="skeleton-card"><div class="skeleton-img"></div><div class="skeleton-body"><div class="skeleton-title"></div><div class="skeleton-line"></div><div class="skeleton-line short"></div><div class="skeleton-footer"></div></div></div>
+        <div class="skeleton-card"><div class="skeleton-img"></div><div class="skeleton-body"><div class="skeleton-title"></div><div class="skeleton-line"></div><div class="skeleton-line short"></div><div class="skeleton-footer"></div></div></div>
+        <div class="skeleton-card"><div class="skeleton-img"></div><div class="skeleton-body"><div class="skeleton-title"></div><div class="skeleton-line"></div><div class="skeleton-line short"></div><div class="skeleton-footer"></div></div></div>
+        <div class="skeleton-card"><div class="skeleton-img"></div><div class="skeleton-body"><div class="skeleton-title"></div><div class="skeleton-line"></div><div class="skeleton-line short"></div><div class="skeleton-footer"></div></div></div>
+        <div class="skeleton-card"><div class="skeleton-img"></div><div class="skeleton-body"><div class="skeleton-title"></div><div class="skeleton-line"></div><div class="skeleton-line short"></div><div class="skeleton-footer"></div></div></div>
+      </div>
+
+      <!-- Actual properties grid (injected by render.js) -->
+      <div class="props-page-grid props-grid" id="props-grid" style="display:none;"></div>
+
+      <!-- Empty state -->
+      <div class="props-empty" id="props-empty" style="display:none;">
+        <i class="fas fa-filter-circle-xmark" style="font-size:2.2rem;color:var(--gold);opacity:0.4;"></i>
+        <p style="margin-top:16px;">لا توجد وحدات تطابق الفلاتر المحددة.</p>
+        <button class="btn-outline" style="margin-top:12px;" onclick="window.ElSahabaFilters.resetAll()">إعادة ضبط الفلاتر</button>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ════════════════════════════════════════
+       OWNER LISTING FORM SECTION
+  ════════════════════════════════════════ -->
+  <section id="list-property" class="list-property-section" aria-label="اعرض عقارك">
+    <div class="section-inner">
+      <div class="list-property-header">
+        <span class="section-label reveal">هل تمتلك عقاراً؟</span>
+        <h2 class="section-title reveal" data-delay="1">
+          اعرض <span>عقارك</span> معنا
+        </h2>
+        <p class="reveal" data-delay="2" style="color:var(--text-muted);font-size:0.9rem;max-width:520px;margin:14px auto 0;line-height:1.9;">
+          سجّل بيانات عقارك في النموذج أدناه وسيقوم فريقنا بالتواصل معك خلال 24 ساعة
+        </p>
+        <div class="section-divider center reveal" data-delay="3"></div>
+      </div>
+       <div style="display: flex; justify-content: center;">
+         <button class="btn-outline" onclick="window.location.href='aerid-aqarak.html'">
+             اعرض عقارك من هنا 
+         </button>
+</div>
+    </div>
+  </section>
+
+
+  <!-- ════════════════════════════════════════
+       BACK LINK
+  ════════════════════════════════════════ -->
+  <div style="text-align:center;padding:40px 0 80px;">
+    <a href="index.html" class="btn-view-all"
+       style="display:inline-flex;align-items:center;gap:10px;">
+      <i class="fas fa-arrow-right"></i>
+      العودة إلى الصفحة الرئيسية
+    </a>
+  </div>
+
+
+  <!-- ════════════════════════════════════════
+       FOOTER
+  ════════════════════════════════════════ -->
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <img src="https://res.cloudinary.com/daicsoapy/image/upload/q_auto/f_auto/v1777700851/Picture5_i6btgv.gif"
+               alt="الصحابة للعقارات" />
+          <p> الصحابة العقارية — أرقى العقارات التي تليق بك   .</p>
+          <div class="footer-social-row">
+            <a href="https://www.facebook.com/profile.php?id=61589100016014" aria-label="فيسبوك"   target="_blank" rel="noopener"><i class="fab fa-facebook-f"></i></a>
+            <a href="https://www.instagram.com/elsahaba.real.estate/" aria-label="إنستغرام" target="_blank" rel="noopener"><i class="fab fa-instagram"></i></a>
+            <a href="https://www.tiktok.com/@elsahaba.real.estate" aria-label="تيك توك"    target="_blank" rel="noopener"><i class="fab fa-tiktok"></i></a>
+            <a href="https://linktr.ee/elsahabarealestate" class="footer-linktree" target="_blank" rel="noopener">
+              <i class="fas fa-link"></i> روابطنا
+            </a>
+          </div>
+        </div>
+        <div class="footer-col">
+          <h4>روابط سريعة</h4>
+          <ul>
+            <li><a href="index.html">الرئيسية</a></li>
+            <li><a href="index.html#properties">وحداتنا المميزة</a></li>
+            <li><a href="aerid-aqarak.html">اعرض عقارك معنا</a></li>
+            <li><a href="index.html#why">لماذا الصحابة؟</a></li>
+            <li><a href="index.html#testimonials">آراء العملاء</a></li>
+            <li><a href="index.html#contact">تواصل معنا</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>تواصل معنا</h4>
+          <ul>
+            <li><a href="#"> الهرم، الجيزة، مصر</a></li>
+            <li><a href="tel:+201227164595"> اتصل بنا</a></li>
+            <li><a href="https://wa.me/+201227164595" target="_blank" rel="noopener"> واتساب</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>© 2025  <span class="footer-gold">الصحابة</span> العقارية.</span>
+      </div>
+    </div>
+  </footer>
+
+
+  <!-- ════════════════════════════════════════
+       FLOATING ACTION BUTTON (List Property)
+  ════════════════════════════════════════ -->
+  <div class="fab-list-property" id="fab-list"
+       onclick="document.getElementById('list-property').scrollIntoView({behavior:'smooth'})"
+       role="button" tabindex="0" aria-label="اعرض عقارك">
+    <i class="fas fa-plus"></i>
+    <span class="fab-tooltip">اعرض عقارك</span>
+  </div>
+
+  <!-- Floating WhatsApp -->
+  <div class="float-wa visible" id="float-wa">
+    <a class="float-wa-btn"
+       href="https://wa.me/+201227164595" target="_blank" rel="noopener"
+       aria-label="واتساب">
+      <i class="fab fa-whatsapp"></i>
+    </a>
+    <span class="wa-tooltip">تواصل عبر واتساب</span>
+  </div>
+
+
+  <!-- ════════════════════════════════════════
+       PROPERTY DETAIL MODAL / BOTTOM SHEET
+  ════════════════════════════════════════ -->
+  <div class="prop-modal-overlay" id="prop-modal-overlay" onclick="window.ElSahabaUI.closeModal()"></div>
+
+  <div class="prop-modal" id="prop-modal" role="dialog" aria-modal="true" aria-label="تفاصيل الوحدة">
+    <!-- Modal close button -->
+    <button class="prop-modal-close" onclick="window.ElSahabaUI.closeModal()" aria-label="إغلاق">
+      <i class="fas fa-xmark"></i>
+    </button>
+
+    <!-- Modal handle (mobile bottom sheet indicator) -->
+    <div class="prop-modal-handle" aria-hidden="true"><span></span></div>
+
+    <!-- Modal content container -->
+    <div class="prop-modal-body" id="prop-modal-body">
+      <!-- Injected dynamically by render.js -->
+    </div>
+  </div>
+
+
+  <!-- ════════════════════════════════════════
+       SCRIPTS
+  ════════════════════════════════════════ -->
+  <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+
+  <script src="taxonomy.js" defer></script>
+  <script src="api.js"    defer></script>
+  <script src="render.js" defer></script>
+  <script src="ui.js"     defer></script>
+
+  <script defer>
+    document.addEventListener('DOMContentLoaded', async function () {
+      const { bindNav, bindScrollReveal, bindFloatButtons,
+              setLoaderProgress, setLoaderStatus, hideLoader }
+        = window.ElSahabaUI;
+
+      const { fetchPropertiesData } = window.ElSahabaAPI;
+      const { renderPropertiesPage } = window.ElSahabaRender;
+
+      // UI init
+      bindNav();
+      bindScrollReveal();
+      bindFloatButtons();
+
+      setLoaderProgress(15);
+      setLoaderStatus('جارٍ تحميل الوحدات…');
+
+      // Check if API URL is still the placeholder
+      if (window.ElSahabaAPI.GAS_API_URL.includes('YOUR_DEPLOYMENT_ID')) {
+        console.warn('[ElSahaba] GAS_API_URL is still the placeholder. Showing sample data.');
+        // Hide skeleton, show demo message
+        document.getElementById('skeleton-grid').style.display = 'none';
+        document.getElementById('props-grid').style.display = 'none';
+        document.getElementById('props-empty').style.display = 'block';
+        document.getElementById('props-empty').innerHTML = `
+          <i class="fas fa-circle-info" style="font-size:2.2rem;color:var(--gold);opacity:0.5;"></i>
+          <p style="margin-top:16px;">يرجى تحديث رابط Google Apps Script في ملف api.js</p>
+          <p style="font-size:0.8rem;color:var(--text-muted);margin-top:8px;">
+            اتبع تعليمات المرحلة الثانية لنشر الـ API والحصول على الرابط.
+          </p>
+        `;
+        document.getElementById('result-count').textContent = '0 وحدة';
+        setLoaderProgress(100);
+        setLoaderStatus('جاهز');
+        setTimeout(hideLoader, 700);
+        return;
+      }
+
+      try {
+        const data = await fetchPropertiesData();
+        setLoaderProgress(70);
+
+        // Store all properties globally for client-side filtering
+        window._allProperties = data.properties || [];
+        window._filteredProperties = [...window._allProperties];
+
+        // Hide skeleton, show grid
+        document.getElementById('skeleton-grid').style.display = 'none';
+        document.getElementById('props-grid').style.display = '';
+
+        // Initial render
+        renderPropertiesPage(window._filteredProperties);
+
+        // Update count
+        document.getElementById('result-count').textContent =
+          `${window._filteredProperties.length} وحدة متاحة`;
+
+        setLoaderProgress(100);
+        setLoaderStatus('جاهز!');
+      } catch (err) {
+        console.warn('[ElSahaba Properties] API error', err);
+        document.getElementById('skeleton-grid').style.display = 'none';
+        document.getElementById('props-empty').style.display = 'block';
+        document.getElementById('props-empty').innerHTML = `
+          <i class="fas fa-triangle-exclamation" style="font-size:2rem;color:var(--gold);opacity:0.5;"></i>
+          <p style="margin-top:16px;">تعذّر تحميل الوحدات. حاول مرة أخرى لاحقاً.</p>
+        `;
+        document.getElementById('result-count').textContent = '0 وحدة';
+        setLoaderProgress(100);
+      }
+
+      setTimeout(hideLoader, 700);
+      setTimeout(() => window.ElSahabaUI.bindScrollReveal(), 300);
+    });
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <script src="security.js" defer></script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>الصحابة للعقارات — فخامة لا تُضاهى</title>
+  <meta name="description" content=" الصحابة العقارية — أرقى العقارات في الهرم والجيزة، مصر." />
+
+  <!-- ── Favicon (static) ── -->
+  <link rel="icon" type="image/png"
+    href="https://res.cloudinary.com/daicsoapy/image/upload/q_auto/f_auto/v1777700276/%D8%B9%D9%88%D8%A7%D9%85%D9%8A%D8%AF_%D9%85%D8%B3%D8%AC%D8%AF_mjkb1u.png" />
+
+  <!-- ── Google Fonts ── -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800;900&family=Cairo:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet" />
+
+  <!-- ── Swiper CSS ── -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+
+  <!-- ── FontAwesome ── -->
+  <link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+
+  <!-- ── Project Styles ── -->
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- ════════════════════════════════════════
+       LOADER
+  ════════════════════════════════════════ -->
+  <div id="loader" role="status" aria-label="جارٍ التحميل">
+    <img class="loader-logo"
+      src="https://res.cloudinary.com/daicsoapy/image/upload/q_auto/f_auto/v1777700851/Picture5_i6btgv.gif"
+      alt="شعار الصحابة" />
+    <p class="loader-status" id="loader-status">جارٍ التحميل…</p>
+    <div class="loader-bar">
+      <div class="loader-bar-fill" id="loader-fill"></div>
+    </div>
+  </div>
+
+
+  <!-- ════════════════════════════════════════
+       NAVIGATION
+  ════════════════════════════════════════ -->
+  <nav id="main-nav" role="navigation" aria-label="القائمة الرئيسية">
+
+    <!-- Logo -->
+    <div class="nav-logo">
+      <img src="https://res.cloudinary.com/daicsoapy/image/upload/q_auto/f_auto/v1777700851/Picture5_i6btgv.gif"
+           alt="شعار الصحابة للعقارات" />
+    </div>
+
+    <!-- Centre links -->
+    <ul class="nav-center">
+      <li><a href="#properties">وحداتنا المميزة</a></li>
+      <li><a href="properties.html"> جميع الوحدات</a></li>
+      <li><a href="aerid-aqarak.html">اعرض عقارك معنا</a></li>
+      <li><a href="#why">لماذا الصحابة؟</a></li>
+      <li><a href="#testimonials">آراء العملاء</a></li>
+      <li><a href="#contact">تواصل معنا</a></li>
+    </ul>
+
+    <!-- Right cluster: social + linktree + CTA + hamburger -->
+    <div class="nav-right">
+      <div class="nav-social">
+        <a href="https://www.facebook.com/profile.php?id=61589100016014" aria-label="فيسبوك" target="_blank" rel="noopener">
+          <i class="fab fa-facebook-f"></i>
+        </a>
+        <a href="https://www.instagram.com/elsahaba.real.estate/" aria-label="إنستغرام" target="_blank" rel="noopener">
+          <i class="fab fa-instagram"></i>
+        </a>
+        <a href="https://www.tiktok.com/@elsahaba.real.estate?is_from_webapp=1&sender_device=pc" aria-label="تيك توك / X" target="_blank" rel="noopener">
+          <i class="fab fa-tiktok"></i>
+        </a>
+      </div>
+
+      <a href="https://linktr.ee/elsahabarealestate" class="btn-linktree" target="_blank" rel="noopener"
+         aria-label="صفحة الروابط">
+        <i class="fas fa-link"></i>
+        <span>روابطنا</span>
+      </a>
+
+      <button class="nav-cta"
+        onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})"
+        aria-label="احجز معاينة">
+        احجز معاينة
+      </button>
+
+      <button class="hamburger" id="hamburger" aria-label="فتح القائمة">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Mobile nav overlay -->
+  <div class="mobile-overlay" id="mobile-overlay"></div>
+
+  <!-- Mobile nav drawer -->
+  <nav class="mobile-nav" id="mobile-nav" aria-label="القائمة المحمول">
+    <button class="mobile-close" id="mobile-close" aria-label="إغلاق القائمة">✕</button>
+    <ul>
+      <li><a href="#properties"  onclick="closeMobileNav()">وحداتنا المميزة</a></li>
+      <li><a href="properties.html"  onclick="closeMobileNav()"> جميع الوحدات</a></li>
+      <li><a href="aerid-aqarak.html"  onclick="closeMobileNav()">اعرض عقارك معنا</a></li>
+      <li><a href="#why"         onclick="closeMobileNav()">لماذا الصحابة؟</a></li>
+      <li><a href="#testimonials" onclick="closeMobileNav()">آراء العملاء</a></li>
+      <li><a href="#contact"     onclick="closeMobileNav()">تواصل معنا</a></li>
+    </ul>
+    <div class="mobile-social">
+      <a href="https://www.facebook.com/profile.php?id=61589100016014" aria-label="فيسبوك"   target="_blank" rel="noopener"><i class="fab fa-facebook-f"></i></a>
+      <a href="https://www.instagram.com/elsahaba.real.estate/" aria-label="إنستغرام" target="_blank" rel="noopener"><i class="fab fa-instagram"></i></a>
+      <a href="https://www.tiktok.com/@elsahaba.real.estate?is_from_webapp=1&sender_device=pc" aria-label="تيك توك"    target="_blank" rel="noopener"><i class="fab fa-tiktok"></i></a>
+      <a href="https://linktr.ee/elsahabarealestate" class="btn-linktree" style="border-radius:20px;font-size:0.78rem;"
+         target="_blank" rel="noopener">
+        <i class="fas fa-link"></i> روابطنا
+      </a>
+    </div>
+  </nav>
+
+
+  <!-- ════════════════════════════════════════
+       HERO
+  ════════════════════════════════════════ -->
+  <section id="hero" aria-label="الشاشة الرئيسية">
+    <div class="hero-gradient" aria-hidden="true"></div>
+    <div class="hero-grid"     aria-hidden="true"></div>
+    <div class="particles-wrap" id="particles" aria-hidden="true"></div>
+
+    <div class="hero-content">
+      <img class="hero-logo"
+        src="https://res.cloudinary.com/daicsoapy/image/upload/q_auto/f_auto/v1777700851/Picture5_i6btgv.gif"
+        alt="الصحابة للعقارات" />
+      <p class="hero-eyebrow"> الصحابة العقارية</p>
+<h1 class="hero-title">
+        تحويشة عمرك خطوة كبيرة،<br /><span>وعشان كدة محتاجة مستشار أمين</span>
+      </h1>
+      <p class="hero-subtitle">
+        بنساعدك تلاقي عقارك الجاي بالقاهرة والجيزة بوضوح كامل ولغة أرقام صريحة.<br />
+        من غير وعود عايمة، إحنا هنا عشان نكون في صفك ونحميك من أي مخاطرة في السوق.
+      </p>
+<div class="hero-cta-container">
+        
+        <div class="cta-buyer-actions">
+          <button class="btn-gold" onclick="document.getElementById('properties').scrollIntoView({behavior:'smooth'})">
+            استعرض الوحدات المميزة
+          </button>
+          <button class="btn-outline" onclick="window.location.href='properties.html'">
+             استعرض الوحدات المتاحة
+          </button>
+          <button class="btn-outline" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">
+            طلب استشارة أو معاينة
+          </button>
+        </div>
+
+        <div class="cta-seller-action">
+          <span class="cta-hint-text">عايز تبيع أو تؤجر؟</span>
+          <button class="btn-text-link" onclick="window.location.href='aerid-aqarak.html'">
+            اعرض عقارك معانا بوضوح وحرية ←
+          </button>
+        </div>
+
+      </div>
+  </section>
+
+
+  <!-- ════════════════════════════════════════
+       STATS BAR
+  ════════════════════════════════════════ -->
+ <!-- <section id="stats" aria-label="إحصائياتنا">
+    <div class="section-inner">
+      <div class="stats-grid">
+        <div class="stat-item reveal" data-delay="1">
+          <div class="stat-num">+١٥٠</div>
+          <div class="stat-label">عقار تم بيعه بنجاح</div>
+        </div>
+        <div class="stat-item reveal" data-delay="2">
+          <div class="stat-num">+١٢</div>
+          <div class="stat-label">سنة من الخبرة</div>
+        </div>
+        <div class="stat-item reveal" data-delay="3">
+          <div class="stat-num">٩٨٪</div>
+          <div class="stat-label">نسبة رضا العملاء</div>
+        </div>
+        <div class="stat-item reveal" data-delay="4">
+          <div class="stat-num">+٢٠٠</div>
+          <div class="stat-label">عميل راضٍ</div>
+        </div>
+      </div>
+    </div>
+  </section>
+  -->
+
+  <!-- ════════════════════════════════════════
+       VIDEO SECTION  (hidden until API confirms)
+  ════════════════════════════════════════ -->
+  <section id="video-section" style="display:none;" aria-label="الفيديو التعريفي">
+    <div class="section-inner">
+      <div class="video-header">
+        <span class="section-label reveal">جولة افتراضية</span>
+        <h2 class="section-title reveal" data-delay="1" id="video-title">
+          شاهد العقار عن قرب
+        </h2>
+        <div class="section-divider center reveal" data-delay="2"></div>
+      </div>
+      <div class="reveal-scale" data-delay="2">
+        <div class="video-wrapper">
+          <div id="video-embed-container"></div>
+          <div class="video-glow" aria-hidden="true"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ════════════════════════════════════════
+       PROPERTIES
+  ════════════════════════════════════════ -->
+  <section id="properties" aria-label="عقاراتنا">
+    <div class="section-inner">
+      <div class="props-header">
+        <span class="section-label reveal">عقاراتنا المميزة</span>
+        <h2 class="section-title reveal" data-delay="1">
+          اكتشف <span>أرقى</span> العقارات
+        </h2>
+        <p class="reveal" data-delay="2"
+          style="color:var(--text-muted);font-size:0.9rem;max-width:500px;margin:14px auto 0;line-height:1.9;">
+          كل عقار اخترناه بعناية ليعكس معايير الجودة والتميز التي تستحقها
+        </p>
+        <div class="section-divider center reveal" data-delay="3"></div>
+      </div>
+
+      <!-- Cards injected by render.js -->
+      <div class="props-grid" id="props-grid"></div>
+
+      <!-- ── View All Button ── -->
+      <div class="props-footer reveal" data-delay="2">
+        <a href="properties.html" class="btn-view-all" aria-label="عرض كل الوحدات">
+          <i class="fas fa-th-large"></i>
+          عرض كل الوحدات المتاحة
+          <i class="fas fa-arrow-left"></i>
+        </a>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ════════════════════════════════════════
+       WHY US
+  ════════════════════════════════════════ -->
+  <section id="why" aria-label="لماذا الصحابة">
+    <div class="section-inner">
+      <div class="why-grid">
+
+        <div>
+          <span class="section-label reveal">لماذا الصحابة؟</span>
+          <h2 class="section-title reveal" data-delay="1">
+            القرار العقاري خطوة كبيرة،<br /><span>وعشان كدة محتاج وضوح</span>
+          </h2>
+          <div class="section-divider reveal" data-delay="2"></div>
+          <div class="why-features">
+            
+            <div class="why-feature reveal" data-delay="2">
+              <div class="why-icon" aria-hidden="true">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                </svg>
+              </div>
+              <div>
+                <div class="why-feat-title">فحص قانوني صارم</div>
+                <div class="why-feat-desc">مفيش عقار بيدخل معرضنا غير لما نراجع ورقه، رخصته، وتسلسل ملكيته بالكامل. بنوفر عليك الحيرة والمخاطر عشان تشتري وأنت مطمن ومرتاح البال.</div>
+              </div>
+            </div>
+
+            <div class="why-feature reveal" data-delay="3">
+              <div class="why-icon" aria-hidden="true">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                  <line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/>
+                </svg>
+              </div>
+              <div>
+                <div class="why-feat-title">لغة الأرقام والوضوح</div>
+                <div class="why-feat-desc">بنساعدك تحسب الجدوى الاستثمارية وصافي ربحك المتوقع بدقة قبل ما تاخد أي خطوة. بنبعد تماماً عن الكلام العايم والوعود الشفهية عشان تكون رؤيتك كاملة.</div>
+              </div>
+            </div>
+
+            <div class="why-feature reveal" data-delay="4">
+              <div class="why-icon" aria-hidden="true">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M12 3v17M19 9l-7-3-7 3M5 9c0 3 2 5 2 5s2-2 2-5M19 9c0 3 2 5 2 5s2-2 2-5M12 20h4M12 20H8"/>
+                </svg>
+              </div>
+              <div>
+                <div class="why-feat-title">علاقة عادلة من أول يوم</div>
+                <div class="why-feat-desc">بنتعامل بعمولة منطقية لأننا بنشوف إن عدم الاستغلال مش ميزة إضافية بنتباهى بيها، ده الطبيعي وحقك البسيط عشان تحس إننا شغالين في صفك ولحسابك.</div>
+              </div>
+            </div>
+
+            <div class="why-feature reveal" data-delay="5">
+              <div class="why-icon" aria-hidden="true">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>
+                </svg>
+              </div>
+              <div>
+                <div class="why-feat-title">مستشار أمين.. مش بياع</div>
+                <div class="why-feat-desc">مش بنضغط عليك ولا بنستعجلك عشان نبيع. إحنا هنا عشان نسمعك، نفهم ميزانيتك وهدفك، ونوجهك دايماً للقرار اللي فيه مصلحتك ومصلحة أولادك أولاً.</div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <div class="why-visual-col reveal-scale" data-delay="3">
+          <div class="why-visual-box" aria-hidden="true">
+            <div class="why-big-num">١٠٠٪</div>
+            <div class="why-accent-text">
+              <span class="big-word">وضوح<br />وأمان</span>
+              <p>كل خطوة محسوبة وكل ورقة متراجعة، لأن تحويشة عمرك تستحق التعامل بأعلى درجات المسؤولية والأمانة.</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ════════════════════════════════════════
+       TESTIMONIALS
+  ════════════════════════════════════════ -->
+  <section id="testimonials" aria-label="آراء العملاء">
+    <div class="section-inner">
+      <div class="testi-header">
+        <span class="section-label reveal">آراء عملائنا</span>
+        <h2 class="section-title reveal" data-delay="1">ماذا يقول <span>عملاؤنا</span></h2>
+        <div class="section-divider center reveal" data-delay="2"></div>
+      </div>
+
+      <div class="reveal" data-delay="2">
+        <div class="swiper testi-swiper" id="testi-swiper">
+          <!-- Slides injected by render.js -->
+          <div class="swiper-wrapper" id="testi-wrapper"></div>
+        </div>
+
+        <div class="swiper-nav-wrap">
+          <button class="swiper-btn" id="testi-prev" aria-label="السابق">&#8250;</button>
+          <div class="testi-pagination swiper-pagination"></div>
+          <button class="swiper-btn" id="testi-next" aria-label="التالي">&#8249;</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ════════════════════════════════════════
+       CONTACT FORM
+  ════════════════════════════════════════ -->
+  <section id="contact" aria-label="نموذج التواصل">
+    <div class="section-inner">
+      <div class="contact-header">
+        <span class="section-label reveal">تواصل معنا</span>
+        <h2 class="section-title reveal" data-delay="1">
+          ابدأ رحلتك <span>العقارية</span> اليوم
+        </h2>
+        <p class="reveal" data-delay="2"
+          style="color:var(--text-muted);font-size:0.88rem;max-width:480px;margin:12px auto 0;line-height:1.9;">
+          احجز معاينة مجانية او اترك استفسارك وسنتواصل معك في أقرب وقت
+        </p>
+        <div class="section-divider center reveal" data-delay="3"></div>
+      </div>
+
+      <div class="form-container reveal-scale" data-delay="2">
+        <iframe
+          src="https://docs.google.com/forms/d/e/1FAIpQLSd-vNAZOvMO3LeZAgacOIitA6P9yedgAY9PIwfwGPd9NEgr6Q/viewform?embedded=true"
+          title="نموذج حجز المعاينة"
+          loading="lazy"
+          allowfullscreen>
+        </iframe>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ════════════════════════════════════════
+       FOOTER
+  ════════════════════════════════════════ -->
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-grid">
+
+        <!-- Brand column -->
+        <div class="footer-brand">
+          <img src="https://res.cloudinary.com/daicsoapy/image/upload/q_auto/f_auto/v1777700851/Picture5_i6btgv.gif"
+               alt="الصحابة للعقارات" />
+          <p>الصحابة العقارية — مش مجرد وسيط، إحنا مستشارك الأمين في الجيزة والقاهرة الكبرى. بنراجع وراك كل التفاصيل القانونية والمالية وبنفلتر السوق عشان تختار عقارك الجاي وأنت مطمن ومن غير أي ضغط بياع.</p>
+          <div class="footer-social-row">
+            <a href="https://www.facebook.com/profile.php?id=61589100016014" aria-label="فيسبوك"   target="_blank" rel="noopener"><i class="fab fa-facebook-f"></i></a>
+            <a href="https://www.instagram.com/elsahaba.real.estate/" aria-label="إنستغرام" target="_blank" rel="noopener"><i class="fab fa-instagram"></i></a>
+            <a href="https://www.tiktok.com/@elsahaba.real.estate" aria-label="تيك توك"    target="_blank" rel="noopener"><i class="fab fa-tiktok"></i></a>
+            <a href="https://linktr.ee/elsahabarealestate" class="footer-linktree" target="_blank" rel="noopener">
+              <i class="fas fa-link"></i> روابطنا
+            </a>
+          </div>
+        </div>
+
+        <!-- Quick links -->
+        <div class="footer-col">
+          <h4>روابط سريعة</h4>
+          <ul>
+            <li><a href="#hero">الرئيسية</a></li>
+            <li><a href="#properties">وحداتنا المميزة</a></li>
+            <li><a href="properties.html">كل الوحدات</a></li>
+            <li><a href="aerid-aqarak.html">اعرض عقارك معنا</a></li>
+            <li><a href="#why">لماذا نحن</a></li>
+            <li><a href="#testimonials">آراء العملاء</a></li>
+            <li><a href="#contact">تواصل معنا</a></li>
+          </ul>
+        </div>
+
+        <!-- Contact info -->
+        <div class="footer-col">
+          <h4>تواصل معنا</h4>
+          <ul>
+            <li><a href="#"> الهرم، الجيزة، مصر</a></li>
+            <li><a href="tel:+201227164595"> اتصل بنا الآن</a></li>
+            <li><a href="https://wa.me/201227164595" target="_blank" rel="noopener"> واتساب</a></li>
+            <li><a href="elsahabarealestate@gmail.com"> راسلنا بالبريد</a></li>
+          </ul>
+        </div>
+
+      </div>
+
+      <div class="footer-bottom">
+        <span>© 2025  <span class="footer-gold">الصحابة</span> العقارية. جميع الحقوق محفوظة.</span>
+      </div>
+    </div>
+  </footer>
+
+
+  <!-- ════════════════════════════════════════
+       FLOATING BUTTONS
+  ════════════════════════════════════════ -->
+  <!-- Book Inspection CTA -->
+  <div class="float-cta" id="float-cta">
+    <div class="float-cta-inner"
+      onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})"
+      role="button" tabindex="0" aria-label="احجز معاينة مجانية">
+      <div class="float-dot" aria-hidden="true"></div>
+      احجز معاينة مجانية
+    </div>
+  </div>
+
+  <!-- WhatsApp -->
+  <div class="float-wa" id="float-wa">
+    <a class="float-wa-btn"
+       href="https://wa.me/201227164595"
+       target="_blank" rel="noopener"
+       aria-label="تواصل عبر واتساب">
+      <i class="fab fa-whatsapp"></i>
+    </a>
+    <span class="wa-tooltip">تواصل عبر واتساب</span>
+  </div>
+
+
+  <!-- ════════════════════════════════════════
+       SCRIPTS  (load order matters)
+  ════════════════════════════════════════ -->
+  <!-- Swiper (sync — required by render.js) -->
+  <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+
+  <!-- Project modules (defer = after HTML parse, before DOMContentLoaded) -->
+  <script src="api.js"    defer></script>
+  <script src="render.js" defer></script>
+  <script src="ui.js"     defer></script>
+  <script src="app.js"    defer></script>
+
+</body>
+</html>

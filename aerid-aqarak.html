@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <script src="security.js" defer></script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>اعرض عقارك معنا — الصحابة العقارية</title>
+  <meta name="description" content="اعرض عقارك مع الصحابة العقارية — سجّل بياناتك وسيتواصل معك فريقنا لعرض وحدتك على الموقع." />
+
+  <link rel="icon" type="image/png"
+    href="https://res.cloudinary.com/daicsoapy/image/upload/q_auto/f_auto/v1777700276/%D8%B9%D9%88%D8%A7%D9%85%D9%8A%D8%AF_%D9%85%D8%B3%D8%AC%D8%AF_mjkb1u.png" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800;900&family=Cairo:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+
+  <!-- Shared site styles -->
+  <link rel="stylesheet" href="style.css" />
+  <!-- Page-specific styles -->
+  <link rel="stylesheet" href="aerid-aqarak.css" />
+</head>
+<body>
+
+  <!-- ════════════════════════════════════════
+       NAVIGATION (identical to site nav)
+  ════════════════════════════════════════ -->
+  <nav id="main-nav" role="navigation" aria-label="القائمة الرئيسية">
+    <div class="nav-logo">
+      <a href="index.html">
+        <img src="https://res.cloudinary.com/daicsoapy/image/upload/q_auto/f_auto/v1777700851/Picture5_i6btgv.gif"
+             alt="شعار الصحابة للعقارات" />
+      </a>
+    </div>
+
+    <ul class="nav-center">
+      <li><a href="index.html">الرئيسية</a></li>
+      <li><a href="index.html#properties">وحداتنا المميزة</a></li>
+      <li><a href="properties.html">جميع الوحدات</a></li>
+      <li><a href="index.html#why">لماذا الصحابة؟</a></li>
+      <li><a href="index.html#testimonials">آراء العملاء</a></li>
+      <li><a href="index.html#contact">تواصل معنا</a></li>
+    </ul>
+
+    <div class="nav-right">
+      <div class="nav-social">
+        <a href="https://www.facebook.com/profile.php?id=61589100016014" aria-label="فيسبوك" target="_blank" rel="noopener"><i class="fab fa-facebook-f"></i></a>
+        <a href="https://www.instagram.com/elsahaba.real.estate/" aria-label="إنستغرام" target="_blank" rel="noopener"><i class="fab fa-instagram"></i></a>
+        <a href="https://www.tiktok.com/@elsahaba.real.estate" aria-label="تيك توك" target="_blank" rel="noopener"><i class="fab fa-tiktok"></i></a>
+      </div>
+      <a href="https://linktr.ee/elsahabarealestate" class="btn-linktree" target="_blank" rel="noopener">
+        <i class="fas fa-link"></i><span>روابطنا</span>
+      </a>
+      <button class="nav-cta" onclick="window.location.href='index.html#contact'" aria-label="احجز معاينة">
+        احجز معاينة
+      </button>
+      <button class="hamburger" id="hamburger" aria-label="فتح القائمة">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <div class="mobile-overlay" id="mobile-overlay"></div>
+  <nav class="mobile-nav" id="mobile-nav" aria-label="القائمة المحمول">
+    <button class="mobile-close" id="mobile-close" aria-label="إغلاق القائمة">✕</button>
+    <ul>
+      <li><a href="index.html" onclick="closeMobileNav()">الرئيسية</a></li>
+      <li><a href="index.html#properties" onclick="closeMobileNav()">وحداتنا المميزة</a></li>
+      <li><a href="properties.html"       onclick="closeMobileNav()">جميع الوحدات</a></li>
+      <li><a href="index.html#why"        onclick="closeMobileNav()">لماذا الصحابة؟</a></li>
+      <li><a href="index.html#testimonials" onclick="closeMobileNav()">آراء العملاء</a></li>
+      <li><a href="index.html#contact"    onclick="closeMobileNav()">تواصل معنا</a></li>
+    </ul>
+    <div class="mobile-social">
+      <a href="https://www.facebook.com/profile.php?id=61589100016014" aria-label="فيسبوك" target="_blank" rel="noopener"><i class="fab fa-facebook-f"></i></a>
+      <a href="https://www.instagram.com/elsahaba.real.estate/" aria-label="إنستغرام" target="_blank" rel="noopener"><i class="fab fa-instagram"></i></a>
+      <a href="https://www.tiktok.com/@elsahaba.real.estate" aria-label="تيك توك" target="_blank" rel="noopener"><i class="fab fa-tiktok"></i></a>
+      <a href="https://linktr.ee/elsahabarealestate" class="btn-linktree" style="border-radius:20px;font-size:0.78rem;" target="_blank" rel="noopener">
+        <i class="fas fa-link"></i> روابطنا
+      </a>
+    </div>
+  </nav>
+
+
+  <!-- ════════════════════════════════════════
+       PAGE HERO
+  ════════════════════════════════════════ -->
+  <section class="page-hero-mini list-hero" aria-label="اعرض عقارك معنا">
+    <div class="hero-gradient" aria-hidden="true"></div>
+    <div class="hero-grid"     aria-hidden="true"></div>
+
+    <div class="list-hero-content">
+      <span class="section-label">الصحابة العقارية</span>
+      <h1>اعرض <span>عقارك</span> معنا</h1>
+      <p>سجّل بيانات وحدتك وسيتواصل معك فريقنا لمراجعة المعلومات ونشر إعلانك على الموقع</p>
+      <div class="hero-trust-badges">
+        <div class="trust-badge"><i class="fas fa-shield-alt"></i><span>بيانات آمنة ومشفّرة</span></div>
+        <div class="trust-badge"><i class="fas fa-clock"></i><span>رد خلال ٢٤ ساعة</span></div>
+        <div class="trust-badge"><i class="fas fa-star"></i><span>عرض مجاني</span></div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ════════════════════════════════════════
+       FORM SECTION
+  ════════════════════════════════════════ -->
+  <section class="list-form-section" aria-label="نموذج إضافة العقار">
+    <div class="section-inner">
+
+      <!-- Success State (hidden initially) -->
+      <div class="success-panel" id="success-panel" role="alert" aria-live="polite" hidden>
+        <div class="success-icon-wrap"><i class="fas fa-check-circle"></i></div>
+        <h2>تم استلام وحدتك بنجاح</h2>
+        <p>برجاء انتظار التواصل معك لمراجعة بعض البيانات</p>
+        <a href="index.html" class="btn-gold" style="text-decoration:none;display:inline-block;margin-top:24px;">
+          العودة للرئيسية
+        </a>
+      </div>
+
+      <!-- Form Card -->
+      <div class="form-card" id="form-card">
+        <div class="form-card-header">
+          <span class="section-label">ملء البيانات</span>
+          <h2 class="section-title" style="font-size:1.7rem;">بيانات الوحدة / العقار</h2>
+          <p class="form-card-subtitle">يرجى ملء جميع الحقول المطلوبة بدقة لضمان عرض وحدتك بشكل احترافي</p>
+        </div>
+
+        <form id="list-property-form" novalidate autocomplete="off">
+
+          <!-- ── Honeypot (anti-spam, hidden) ── -->
+          <div class="hp-field" aria-hidden="true">
+            <input type="text" name="website" id="hp-website" tabindex="-1" autocomplete="off" />
+          </div>
+
+          <!-- ══════════════════════════════════
+               ROW 1 — Personal info
+          ═══════════════════════════════════ -->
+          <div class="form-section-title"><i class="fas fa-user"></i> معلومات التواصل</div>
+
+          <div class="form-row form-row-3">
+            <!-- 1. الاسم -->
+            <div class="form-group">
+              <label for="f-name" class="form-label">الاسم <span class="req">*</span></label>
+              <input type="text" id="f-name" name="name" class="form-control"
+                     placeholder="اسمك الكامل" maxlength="100" required autocomplete="name" />
+              <span class="field-err" id="err-name"></span>
+            </div>
+
+            <!-- 2. رقم الهاتف -->
+            <div class="form-group">
+              <label for="f-phone" class="form-label">رقم الهاتف <span class="req">*</span></label>
+              <input type="tel" id="f-phone" name="phone" class="form-control"
+                     placeholder="01xxxxxxxxx" maxlength="15" required autocomplete="tel" />
+              <span class="field-err" id="err-phone"></span>
+            </div>
+
+            <!-- 3. رقم الواتساب -->
+            <div class="form-group">
+              <label for="f-whatsapp" class="form-label">رقم الواتساب</label>
+              <input type="tel" id="f-whatsapp" name="whatsapp" class="form-control"
+                     placeholder="اتركه فارغاً إن كان هو هو" maxlength="15" autocomplete="off" />
+              <span class="field-hint">اتركه فارغاً إذا كان نفس رقم الهاتف</span>
+            </div>
+          </div>
+
+          <!-- ══════════════════════════════════
+               ROW 2 — Property details
+          ═══════════════════════════════════ -->
+          <div class="form-section-title"><i class="fas fa-building"></i> تفاصيل الوحدة</div>
+
+          <div class="form-row form-row-2">
+            <!-- 4. نوع الوحدة -->
+            <div class="form-group">
+              <label for="f-type" class="form-label">نوع الوحدة / العقار <span class="req">*</span></label>
+              <div class="select-wrap">
+                <select id="f-type" name="unit_type" class="form-control" required
+        data-taxonomy="unit_types"
+        data-value-field="label_ar"
+        data-label-field="label_ar"
+        data-placeholder="اختر نوع الوحدة">
+                   <option value="" disabled selected>جارٍ التحميل…</option>
+                </select>
+              </div>
+              <span class="field-err" id="err-type"></span>
+            </div>
+
+            <!-- 5. ايجار / بيع -->
+            <div class="form-group">
+              <label for="f-listing" class="form-label">ايجار / بيع <span class="req">*</span></label>
+              <div class="listing-toggle" role="group" aria-label="نوع الإعلان">
+                <button type="button" class="listing-btn" data-val="ايجار" id="btn-rent">
+                  <i class="fas fa-key"></i> ايجار
+                </button>
+                <button type="button" class="listing-btn" data-val="بيع" id="btn-sale">
+                  <i class="fas fa-handshake"></i> بيع
+                </button>
+              </div>
+              <input type="hidden" id="f-listing" name="listing_type" required />
+              <span class="field-err" id="err-listing"></span>
+            </div>
+          </div>
+
+          <!-- 6. السعر -->
+          <div class="form-row form-row-1">
+            <div class="form-group">
+              <label for="f-price" class="form-label">السعر <span class="req">*</span></label>
+              <div class="input-prefix-wrap">
+                <span class="input-prefix">جنيه</span>
+                <input type="text" id="f-price" name="price" class="form-control has-prefix"
+                       placeholder="مثال: 1,500,000" maxlength="20" required
+                       inputmode="numeric" />
+              </div>
+              <span class="field-err" id="err-price"></span>
+            </div>
+          </div>
+
+          <!-- ══════════════════════════════════
+               ROW 3 — Location
+          ═══════════════════════════════════ -->
+          <div class="form-section-title"><i class="fas fa-map-marker-alt"></i> الموقع</div>
+
+          <div class="form-row form-row-2">
+            <!-- 7. المدينة -->
+            <div class="form-group">
+              <label for="f-city" class="form-label">المدينة <span class="req">*</span></label>
+              <div class="select-wrap">
+                <select id="f-city" name="city" class="form-control" required
+        data-taxonomy="cities"
+        data-value-field="label_ar"
+        data-label-field="label_ar"
+        data-placeholder="اختر المدينة">
+                          <option value="" disabled selected>جارٍ التحميل…</option>
+                  </select>
+              </div>
+              <span class="field-err" id="err-city"></span>
+            </div>
+
+            <!-- 8. المنطقة -->
+            <div class="form-group">
+              <label for="f-area" class="form-label">المنطقة <span class="req">*</span></label>
+              <div class="select-wrap">
+                <select id="f-area" name="area" class="form-control" required
+        data-taxonomy="districts"
+        data-value-field="label_ar"
+        data-label-field="label_ar"
+        data-placeholder="اختر المنطقة"
+        data-filter-by="city_key"
+        data-filter-source="f-city"
+        data-filter-source-field="key_en">
+  <option value="" disabled selected>اختر المدينة أولاً</option>
+                 </select>
+              </div>
+              <span class="field-err" id="err-area"></span>
+            </div>
+          </div>
+
+          <!-- ══════════════════════════════════
+               ROW 4 — Specs
+          ═══════════════════════════════════ -->
+          <div class="form-section-title"><i class="fas fa-home"></i> مواصفات الوحدة</div>
+
+          <div class="form-row form-row-3">
+            <!-- 9. حالة التشطيب -->
+            <div class="form-group">
+              <label for="f-finish" class="form-label">حالة التشطيب <span class="req">*</span></label>
+              <div class="select-wrap">
+                <select id="f-finish" name="finishing" class="form-control" required
+        data-taxonomy="finishing"
+        data-value-field="label_ar"
+        data-label-field="label_ar"
+        data-placeholder="اختر حالة التشطيب">
+  <option value="" disabled selected>جارٍ التحميل…</option>
+                </select>
+              </div>
+              <span class="field-err" id="err-finish"></span>
+            </div>
+
+            <!-- 10. عدد الغرف -->
+            <div class="form-group">
+              <label for="f-rooms" class="form-label">عدد الغرف <span class="req">*</span></label>
+              <div class="select-wrap">
+                <select id="f-rooms" name="rooms" class="form-control" required
+        data-taxonomy="rooms"
+        data-value-field="key_en"
+        data-label-field="label_ar"
+        data-placeholder="عدد الغرف">
+  <option value="" disabled selected>جارٍ التحميل…</option>
+                 </select>
+              </div>
+              <span class="field-err" id="err-rooms"></span>
+            </div>
+
+            <!-- 11. عدد الحمامات -->
+            <div class="form-group">
+              <label for="f-baths" class="form-label">عدد الحمامات <span class="req">*</span></label>
+              <div class="select-wrap">
+                <select id="f-baths" name="bathrooms" class="form-control" required
+        data-taxonomy="bathrooms"
+        data-value-field="key_en"
+        data-label-field="label_ar"
+        data-placeholder="عدد الحمامات">
+  <option value="" disabled selected>جارٍ التحميل…</option>
+                </select>
+              </div>
+              <span class="field-err" id="err-baths"></span>
+            </div>
+          </div>
+
+          <!-- ══════════════════════════════════
+               ROW 5 — Images (12)
+          ═══════════════════════════════════ -->
+          <div class="form-section-title"><i class="fas fa-images"></i> صور الوحدة <small>(حتى ١٠ صور)</small></div>
+
+          <div class="form-group">
+            <div class="upload-zone" id="upload-zone" role="button" tabindex="0"
+                 aria-label="منطقة رفع الصور">
+              <i class="fas fa-cloud-upload-alt upload-zone-icon"></i>
+              <p class="upload-zone-text">اسحب الصور هنا أو انقر للاختيار</p>
+              <p class="upload-zone-hint">PNG، JPG، WEBP — بحد أقصى ١٠ صور، ١٠ ميجابايت للصورة</p>
+              <input type="file" id="f-images" name="images" multiple accept="image/jpeg,image/png,image/webp,image/gif"
+                     class="file-input-hidden" aria-label="اختر الصور" />
+            </div>
+
+            <!-- Upload progress bar -->
+            <div class="upload-progress-wrap" id="upload-progress-wrap" hidden>
+              <div class="upload-progress-bar">
+                <div class="upload-progress-fill" id="upload-progress-fill"></div>
+              </div>
+              <span class="upload-progress-label" id="upload-progress-label">جارٍ الرفع… ٠٪</span>
+            </div>
+
+            <!-- Image previews -->
+            <div class="img-previews" id="img-previews" aria-label="معاينة الصور" role="list"></div>
+            <span class="field-err" id="err-images"></span>
+          </div>
+
+          <!-- ══════════════════════════════════
+               ROW 6 — Description & Location
+          ═══════════════════════════════════ -->
+          <div class="form-section-title"><i class="fas fa-align-right"></i> وصف ومعلومات إضافية</div>
+
+          <!-- 13. وصف الشقة كاملا -->
+          <div class="form-group">
+            <label for="f-desc" class="form-label">وصف الوحدة كاملاً <span class="req">*</span></label>
+            <textarea id="f-desc" name="description" class="form-control form-textarea" rows="5"
+                      placeholder="اكتب وصفاً تفصيلياً للوحدة — المساحة، المميزات، الطابق، المرافق، وأي معلومات مفيدة للمشتري أو المستأجر..."
+                      maxlength="2000" required></textarea>
+            <span class="char-count" id="desc-count">٠ / ٢٠٠٠</span>
+            <span class="field-err" id="err-desc"></span>
+          </div>
+
+          <!-- 14. موقع الوحدة -->
+          <div class="form-group">
+            <label for="f-location" class="form-label">موقع الوحدة / العقار <span class="req">*</span></label>
+            <input type="url" id="f-location" name="location_url" class="form-control"
+                   placeholder="رابط خرائط جوجل — مثال: https://maps.google.com/..."
+                   maxlength="500" required />
+            <span class="field-hint">
+              <i class="fas fa-info-circle" style="color:var(--gold);font-size:0.75rem;"></i>
+              افتح الموقع على خرائط جوجل ثم انسخ الرابط من شريط العنوان
+            </span>
+            <span class="field-err" id="err-location"></span>
+          </div>
+
+          <!-- ══════════════════════════════════
+               SUBMIT
+          ═══════════════════════════════════ -->
+          <div class="form-submit-area">
+            <button type="submit" class="btn-submit" id="btn-submit" aria-label="إرسال بيانات الوحدة">
+              <span class="btn-submit-text">
+                <i class="fas fa-paper-plane"></i>
+                إرسال بيانات الوحدة
+              </span>
+              <span class="btn-submit-loading" hidden>
+                <i class="fas fa-circle-notch fa-spin"></i>
+                جارٍ الإرسال…
+              </span>
+            </button>
+            <p class="submit-note">
+              بالنقر على الإرسال، أنت توافق على عرض بياناتك على فريق الصحابة العقارية للمراجعة والنشر
+            </p>
+          </div>
+
+        </form>
+      </div><!-- /form-card -->
+
+    </div><!-- /section-inner -->
+  </section>
+
+
+  <!-- ════════════════════════════════════════
+       FOOTER
+  ════════════════════════════════════════ -->
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <img src="https://res.cloudinary.com/daicsoapy/image/upload/q_auto/f_auto/v1777700851/Picture5_i6btgv.gif"
+               alt="الصحابة للعقارات" />
+          <p>الصحابة العقارية — مش مجرد وسيط، إحنا مستشارك الأمين في الجيزة والقاهرة الكبرى. بنراجع وراك كل التفاصيل القانونية والمالية وبنفلتر السوق عشان تختار عقارك الجاي وأنت مطمن ومن غير أي ضغط بياع.</p>
+          <div class="footer-social-row">
+            <a href="https://www.facebook.com/profile.php?id=61589100016014" aria-label="فيسبوك" target="_blank" rel="noopener"><i class="fab fa-facebook-f"></i></a>
+            <a href="https://www.instagram.com/elsahaba.real.estate/" aria-label="إنستغرام" target="_blank" rel="noopener"><i class="fab fa-instagram"></i></a>
+            <a href="https://www.tiktok.com/@elsahaba.real.estate" aria-label="تيك توك" target="_blank" rel="noopener"><i class="fab fa-tiktok"></i></a>
+            <a href="https://linktr.ee/elsahabarealestate" class="footer-linktree" target="_blank" rel="noopener">
+              <i class="fas fa-link"></i> روابطنا
+            </a>
+          </div>
+        </div>
+        <div class="footer-col">
+          <h4>روابط سريعة</h4>
+          <ul>
+            <li><a href="index.html">الرئيسية</a></li>
+            <li><a href="index.html#properties">وحداتنا المميزة</a></li>
+            <li><a href="properties.html">كل الوحدات</a></li>
+            <li><a href="index.html#why">لماذا نحن</a></li>
+            <li><a href="index.html#contact">تواصل معنا</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>تواصل معنا</h4>
+          <ul>
+            <li><a href="#">الهرم، الجيزة، مصر</a></li>
+            <li><a href="tel:+201227164595">اتصل بنا الآن</a></li>
+            <li><a href="https://wa.me/+201227164595" target="_blank" rel="noopener">واتساب</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>© 2025 <span class="footer-gold">الصحابة</span> العقارية. جميع الحقوق محفوظة.</span>
+      </div>
+    </div>
+  </footer>
+
+
+  <!-- Floating WhatsApp -->
+  <div class="float-wa visible" id="float-wa">
+    <a class="float-wa-btn"
+       href="https://wa.me/+201227164595"
+       target="_blank" rel="noopener"
+       aria-label="تواصل عبر واتساب">
+      <i class="fab fa-whatsapp"></i>
+    </a>
+    <span class="wa-tooltip">تواصل عبر واتساب</span>
+  </div>
+
+
+  <!-- ════════════════════════════════════════
+       SCRIPTS
+  ════════════════════════════════════════ -->
+  <script src="taxonomy.js" defer></script>
+  <script src="ui.js" defer></script>
+  <script src="aerid-aqarak.js" defer></script>
+</body>
+</html>
