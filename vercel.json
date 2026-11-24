@@ -1,7 +1,66 @@
 {
-  "crons": [{ "path": "/api/keepalive", "schedule": "0 6 * * *" }],
+  "crons": [
+    {
+      "path": "/api/keepalive",
+      "schedule": "0 6 * * *"
+    }
+  ],
   "rewrites": [
-    { "source": "/property/:id", "destination": "/api/property?id=:id" },
-    { "source": "/sitemap.xml", "destination": "/api/sitemap" }
+    {
+      "source": "/property/:id",
+      "destination": "/api/property?id=:id"
+    },
+    {
+      "source": "/sitemap.xml",
+      "destination": "/api/sitemap"
+    },
+    {
+      "source": "/d/h2otgOOEGqgpT6WjCGvJx7Au",
+      "destination": "/d-h2otgOOEGqgpT6WjCGvJx7Au.html"
+    }
+  ],
+  "headers": [
+    {
+      "source": "/d-h2otgOOEGqgpT6WjCGvJx7Au.html",
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex, nofollow, noarchive"
+        },
+        {
+          "key": "Cache-Control",
+          "value": "no-store"
+        },
+        {
+          "key": "Referrer-Policy",
+          "value": "no-referrer"
+        },
+        {
+          "key": "X-Frame-Options",
+          "value": "DENY"
+        }
+      ]
+    },
+    {
+      "source": "/d/h2otgOOEGqgpT6WjCGvJx7Au",
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex, nofollow, noarchive"
+        },
+        {
+          "key": "Cache-Control",
+          "value": "no-store"
+        },
+        {
+          "key": "Referrer-Policy",
+          "value": "no-referrer"
+        },
+        {
+          "key": "X-Frame-Options",
+          "value": "DENY"
+        }
+      ]
+    }
   ]
 }

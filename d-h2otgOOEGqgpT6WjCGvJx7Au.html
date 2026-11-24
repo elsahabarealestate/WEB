@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow, noarchive" />
+  <meta name="referrer" content="no-referrer" />
+  <title>لوحة التحكم</title>
+  <link rel="icon" href="/favicon.ico" sizes="48x48" />
+  <style>
+    :root{--bg:#0a1a0e;--card:#102a17;--line:rgba(201,168,76,.2);--gold:#c9a84c;--gold2:#e6c872;--txt:#f3efe2;--mut:rgba(243,239,226,.6)}
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{background:var(--bg);color:var(--txt);font-family:'Cairo',system-ui,-apple-system,'Segoe UI',Tahoma,sans-serif;min-height:100vh;padding:16px}
+    h1{font-size:1.3rem;color:var(--gold2)} h2{font-size:1rem;color:var(--gold2);margin-bottom:10px}
+    .wrap{max-width:1100px;margin:0 auto}
+    .login{max-width:360px;margin:12vh auto;text-align:center}
+    .login input,.bar select,.bar button,.login button{font:inherit;padding:11px 14px;border-radius:8px;border:1px solid var(--line);background:#0c2012;color:var(--txt)}
+    .login input{width:100%;margin:14px 0 10px}
+    button{cursor:pointer;background:var(--gold)!important;color:#0a1a0e!important;font-weight:700;border:none!important}
+    .err{color:#ff8a80;min-height:1.4em;margin-top:8px;font-size:.9rem}
+    .bar{display:flex;gap:10px;align-items:center;justify-content:space-between;flex-wrap:wrap;margin-bottom:16px}
+    .kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-bottom:16px}
+    .k{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px}
+    .k b{display:block;font-size:1.7rem;color:var(--gold2)} .k span{color:var(--mut);font-size:.8rem}
+    .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:12px}
+    .card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px;margin-bottom:12px;overflow-x:auto}
+    table{width:100%;border-collapse:collapse;font-size:.85rem}
+    th,td{padding:7px 6px;text-align:right;border-bottom:1px solid rgba(255,255,255,.06)}
+    th{color:var(--mut);font-weight:600} td.n{text-align:center;font-variant-numeric:tabular-nums}
+    .t{max-width:130px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+    .mut{color:var(--mut);font-size:.8rem}
+    svg{width:100%;height:auto;display:block}
+    .hide{display:none}
+    .tag{display:inline-block;background:rgba(201,168,76,.15);border-radius:6px;padding:1px 8px;font-size:.78rem;margin:2px}
+  </style>
+</head>
+<body>
+<div class="wrap">
+  <div id="login" class="login">
+    <h1>لوحة التحكم</h1>
+    <p class="mut" style="margin-top:6px">أدخل كلمة السر</p>
+    <input id="pass" type="password" autocomplete="current-password" placeholder="كلمة السر" />
+    <button id="go" type="button" style="width:100%">دخول</button>
+    <div class="err" id="err"></div>
+  </div>
+
+  <div id="app" class="hide">
+    <div class="bar">
+      <h1>إحصائيات الصحابة العقارية</h1>
+      <div>
+        <select id="days"><option value="7">آخر ٧ أيام</option><option value="30" selected>آخر ٣٠ يوم</option><option value="90">آخر ٩٠ يوم</option></select>
+        <button id="reload" type="button">تحديث</button>
+        <button id="out" type="button">خروج</button>
+      </div>
+    </div>
+    <div class="kpis" id="kpis"></div>
+    <div class="card"><h2>الزيارات والضغطات على واتساب يوميًا</h2><div id="chart"></div></div>
+    <div class="grid">
+      <div class="card"><h2>أكثر الوحدات مشاهدة</h2><div id="units"></div></div>
+      <div class="card"><h2>المناطق</h2><div id="areas"></div></div>
+      <div class="card"><h2>وحدات عليها مشاهدات وبدون تواصل</h2><div id="cold"></div><p class="mut" style="margin-top:8px">ممكن السعر أو الصور أو الوصف محتاجين مراجعة.</p></div>
+      <div class="card"><h2>مصادر الزيارات</h2><div id="refs"></div></div>
+      <div class="card"><h2>الأجهزة</h2><div id="devs"></div></div>
+      <div class="card"><h2>أكثر الصفحات</h2><div id="pages"></div></div>
+      <div class="card"><h2>اللي الناس بتدور عليه</h2><div id="searches"></div></div>
+      <div class="card"><h2>الفلاتر المستخدمة</h2><div id="filters"></div></div>
+    </div>
+    <p class="mut" id="foot"></p>
+  </div>
+</div>
+<script>
+(function () {
+  'use strict';
+  var ENDPOINT = ''; // analytics Apps Script /exec URL (same as analytics.js)
+  var UNITS_URL = 'https://script.google.com/macros/s/AKfycbzg4uUlhw_LuVpQQPIIukb90nkOpQ8H-DR8CuxaJpkcD0BN6baoYUWWoJVMNvKWv0t4/exec';
+  var SB = 'https://uevycvzopnyxweecoqkl.supabase.co/rest/v1/properties?select=id,Title&order=id.asc';
+  var SBK = 'sb_publishable_OyDCxuMjNfAunWNlLSQpFg_-cgrPVPx';
+  var pass = '', meta = null; // pass is kept in memory only
+  var $ = function (id) { return document.getElementById(id); };
+  var n = function (x) { return Number(x || 0).toLocaleString('en-US'); };
+  var esc = function (s) { return String(s == null ? '' : s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); };
+
+  function post(body) {
+    return fetch(ENDPOINT, { method: 'POST', headers: { 'Content-Type': 'text/plain' }, body: JSON.stringify(body) }).then(function (r) { return r.json(); });
+  }
+  function loadMeta() {
+    if (meta) return Promise.resolve(meta);
+    meta = {};
+    var a = fetch(UNITS_URL).then(function (r) { return r.json(); }).then(function (l) {
+      (Array.isArray(l) ? l : []).forEach(function (p) { meta[p.property_id] = { title: p.title_ar, area: p.district_ar || '', type: p.listing_type }; });
+    }).catch(function () {});
+    var b = fetch(SB, { headers: { apikey: SBK, Authorization: 'Bearer ' + SBK } }).then(function (r) { return r.json(); }).then(function (l) {
+      (Array.isArray(l) ? l : []).forEach(function (p) { meta[String(p.id)] = { title: p.Title, area: '', type: '' }; });
+    }).catch(function () {});
+    return Promise.all([a, b]).then(function () { return meta; });
+  }
+  function table(rows, cols) {
+    if (!rows.length) return '<p class="mut">لسه مفيش بيانات</p>';
+    return '<table><tr>' + cols.map(function (c) { return '<th' + (c.n ? ' style="text-align:center"' : '') + '>' + c.h + '</th>'; }).join('') + '</tr>' +
+      rows.map(function (r) { return '<tr>' + cols.map(function (c) { return '<td class="' + (c.n ? 'n' : 't') + '">' + c.f(r) + '</td>'; }).join('') + '</tr>'; }).join('') + '</table>';
+  }
+  function name(id) { var m = meta[id]; return esc(m && m.title ? m.title : id); }
+  function chart(days) {
+    if (!days.length) return '<p class="mut">لسه مفيش بيانات</p>';
+    var W = 640, H = 180, p = 24, max = Math.max.apply(null, days.map(function (d) { return Math.max(d.sessions, d.wa, 1); }));
+    var bw = (W - p * 2) / days.length, bars = '', line = [];
+    days.forEach(function (d, i) {
+      var h = (d.sessions / max) * (H - p * 2), x = p + i * bw;
+      bars += '<rect x="' + (x + bw * 0.15).toFixed(1) + '" y="' + (H - p - h).toFixed(1) + '" width="' + (bw * 0.7).toFixed(1) + '" height="' + h.toFixed(1) + '" fill="#c9a84c" opacity=".75"><title>' + d.day + ': ' + d.sessions + '</title></rect>';
+      line.push((x + bw / 2).toFixed(1) + ',' + (H - p - (d.wa / max) * (H - p * 2)).toFixed(1));
+    });
+    return '<svg viewBox="0 0 ' + W + ' ' + H + '" role="img" aria-label="رسم بياني">' + bars +
+      '<polyline fill="none" stroke="#25d366" stroke-width="2.5" points="' + line.join(' ') + '"/>' +
+      '<text x="' + p + '" y="' + (H - 6) + '" fill="#aaa" font-size="11">' + days[0].day + '</text>' +
+      '<text x="' + (W - p) + '" y="' + (H - 6) + '" fill="#aaa" font-size="11" text-anchor="end">' + days[days.length - 1].day + '</text></svg>' +
+      '<p class="mut"><span class="tag" style="background:rgba(201,168,76,.3)">أعمدة: زيارات</span><span class="tag" style="background:rgba(37,211,102,.25)">خط: ضغطات واتساب</span></p>';
+  }
+  function render(s) {
+    var conv = s.sessions ? (s.totals.wa_click / s.sessions * 100) : 0;
+    $('kpis').innerHTML = [
+      [n(s.sessions), 'زيارة (جلسة)'], [n(s.totals.pv), 'مشاهدة صفحة'], [n(s.totals.wa_click), 'ضغطات واتساب'],
+      [conv.toFixed(1) + '%', 'نسبة التحويل لواتساب'], [n(s.totals.call_click), 'ضغطات اتصال'], [n(s.totals.copy_link + s.totals.share), 'نسخ ومشاركة لينك']
+    ].map(function (k) { return '<div class="k"><b>' + k[0] + '</b><span>' + k[1] + '</span></div>'; }).join('');
+    $('chart').innerHTML = chart(s.byDay);
+    $('units').innerHTML = table(s.units.slice(0, 10), [
+      { h: 'الوحدة', f: function (u) { return name(u.id); } }, { h: 'مشاهدات', n: 1, f: function (u) { return n(u.views); } },
+      { h: 'واتساب', n: 1, f: function (u) { return n(u.wa); } }, { h: 'نسخ', n: 1, f: function (u) { return n(u.copy + u.share); } }]);
+    var areas = {};
+    s.units.forEach(function (u) { var a = (meta[u.id] && meta[u.id].area) || ''; if (!a) return; var x = areas[a] || (areas[a] = { a: a, v: 0, w: 0 }); x.v += u.views; x.w += u.wa; });
+    $('areas').innerHTML = table(Object.keys(areas).map(function (k) { return areas[k]; }).sort(function (a, b) { return b.v - a.v; }).slice(0, 10), [
+      { h: 'المنطقة', f: function (r) { return esc(r.a); } }, { h: 'مشاهدات', n: 1, f: function (r) { return n(r.v); } }, { h: 'واتساب', n: 1, f: function (r) { return n(r.w); } }]);
+    $('cold').innerHTML = table(s.units.filter(function (u) { return u.views >= 5 && u.wa === 0; }).slice(0, 8), [
+      { h: 'الوحدة', f: function (u) { return name(u.id); } }, { h: 'مشاهدات', n: 1, f: function (u) { return n(u.views); } }]);
+    var tot = s.sessions || 1;
+    $('refs').innerHTML = table(s.referrers, [{ h: 'المصدر', f: function (r) { return esc(r.k); } }, { h: 'زيارات', n: 1, f: function (r) { return n(r.n); } }]);
+    var dn = { m: 'موبايل', t: 'تابلت', d: 'كمبيوتر' };
+    $('devs').innerHTML = table(Object.keys(s.devices).map(function (k) { return { k: dn[k], n: s.devices[k] }; }), [{ h: 'الجهاز', f: function (r) { return r.k; } }, { h: 'مشاهدات', n: 1, f: function (r) { return n(r.n); } }]);
+    $('pages').innerHTML = table(s.pages, [{ h: 'الصفحة', f: function (r) { return esc(r.k); } }, { h: 'مشاهدات', n: 1, f: function (r) { return n(r.n); } }]);
+    $('searches').innerHTML = table(s.searches, [{ h: 'كلمة البحث', f: function (r) { return esc(r.k); } }, { h: 'مرات', n: 1, f: function (r) { return n(r.n); } }]);
+    $('filters').innerHTML = table(s.filters, [{ h: 'الفلتر', f: function (r) { return esc(r.k); } }, { h: 'مرات', n: 1, f: function (r) { return n(r.n); } }]);
+    $('foot').textContent = 'الإحصائيات بدون كوكيز وبدون بيانات شخصية. الزيارة = جلسة تصفح واحدة.';
+  }
+  function load() {
+    $('err').textContent = '';
+    return Promise.all([post({ action: 'stats', p: pass, days: Number($('days').value) }), loadMeta()]).then(function (a) {
+      var r = a[0];
+      if (!r.ok) { throw new Error(r.error); }
+      $('login').classList.add('hide'); $('app').classList.remove('hide'); render(r.stats);
+    });
+  }
+  function fail(e) {
+    var m = { auth: 'كلمة السر غلط', locked: 'محاولات كتير غلط. استنى ١٥ دقيقة وجرب تاني' }[e.message] || 'مش قادر أوصل للبيانات دلوقتي';
+    pass = ''; $('login').classList.remove('hide'); $('app').classList.add('hide'); $('err').textContent = m;
+  }
+  $('go').addEventListener('click', function () { if (!ENDPOINT) { $('err').textContent = 'اللوحة لسه متربطتش بقاعدة الإحصائيات'; return; } pass = $('pass').value; $('pass').value = ''; load().catch(fail); });
+  $('pass').addEventListener('keydown', function (e) { if (e.key === 'Enter') $('go').click(); });
+  $('reload').addEventListener('click', function () { load().catch(fail); });
+  $('days').addEventListener('change', function () { load().catch(fail); });
+  $('out').addEventListener('click', function () { pass = ''; $('app').classList.add('hide'); $('login').classList.remove('hide'); });
+})();
+</script>
+</body>
+</html>
