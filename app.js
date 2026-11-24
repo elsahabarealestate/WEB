@@ -45,22 +45,39 @@ async function _boot() {
   setLoaderProgress(10);
   setLoaderStatus('جارٍ تحميل البيانات…');
 
-  let data;
+  let data = null;
   try {
-    data = await fetchSiteData();
-    setLoaderProgress(60);
-    setLoaderStatus('جارٍ بناء الصفحة…');
+    data = await _withTimeout(fetchSiteData(), FETCH_TIMEOUT_MS);
   } catch (err) {
-    console.warn('[ElSahaba] API unavailable — showing fallback content.', err);
-    setLoaderProgress(100);
-    setLoaderStatus('جاهز');
-    _applyFallback(renderTestimonials);
-    setTimeout(hideLoader, 700);
-    return;
+    console.warn('[ElSahaba] API request failed.', err);
   }
 
+  if (_isValidData(data)) {
+    _saveCache(data);
+  } else {
+    // Failed, timed out, or returned nothing: use last good data if we have it.
+    const cached = _loadCache();
+    if (cached) {
+      console.warn('[ElSahaba] Using cached data.');
+      data = cached;
+    } else {
+      console.warn('[ElSahaba] No data available, showing fallback content.');
+      setLoaderProgress(100);
+      setLoaderStatus('جاهز');
+      try { _applyFallback(renderTestimonials); } catch (e) { console.error(e); }
+      setTimeout(hideLoader, 700);
+      return;
+    }
+  }
+  setLoaderProgress(60);
+  setLoaderStatus('جارٍ بناء الصفحة…');
+
   /* ── Step 3 — Render data into the page ── */
-  _applyData(data, { renderVideoSection, renderProperties, renderTestimonials });
+  try {
+    _applyData(data, { renderVideoSection, renderProperties, renderTestimonials });
+  } catch (err) {
+    console.error('[ElSahaba] Render failed.', err);
+  }
 
   setLoaderProgress(100);
   setLoaderStatus('جاهز!');
@@ -86,11 +103,13 @@ async function _boot() {
  * renderer functions.
  */
 function _applyData(data, { renderVideoSection, renderProperties, renderTestimonials }) {
-  const { settings = {}, properties = [], testimonials = [] } = data;
+  const settings = data.settings || {};
+  const properties = Array.isArray(data.properties) ? data.properties : [];
+  const testimonials = Array.isArray(data.testimonials) ? data.testimonials : [];
 
   renderVideoSection(settings);
   renderProperties(properties);
-  renderTestimonials(testimonials.length ? testimonials : null);
+  renderTestimonials(testimonials);
 
   window.ElSahabaUI.setLoaderProgress(90);
 }
@@ -99,12 +118,43 @@ function _applyData(data, { renderVideoSection, renderProperties, renderTestimon
  * _applyFallback(renderTestimonials)
  * -----------------------------------
  * Called when the API fails.
- * Renders fallback testimonials so the page is never empty.
+ * Testimonials hide when there are none (nothing is invented).
  * The properties grid will show the empty-state message.
  */
 function _applyFallback(renderTestimonials) {
-  // Pass null → render.js will use the built-in fallback list
-  renderTestimonials(null);
+  renderTestimonials([]);
   // Properties grid empty state is handled inside renderProperties([])
   window.ElSahabaRender.renderProperties([]);
+}
+
+
+/* ──────────────────────────────────────────────────────────
+   RESILIENCE HELPERS (timeout, validation, last-good cache)
+   ────────────────────────────────────────────────────────── */
+const FETCH_TIMEOUT_MS = 8000;
+const CACHE_KEY = 'elsahaba:lastGoodData:v1';
+
+function _withTimeout(promise, ms) {
+  return new Promise((resolve, reject) => {
+    const t = setTimeout(() => reject(new Error('timeout')), ms);
+    Promise.resolve(promise).then(
+      v => { clearTimeout(t); resolve(v); },
+      e => { clearTimeout(t); reject(e); }
+    );
+  });
+}
+
+function _isValidData(d) {
+  return !!d && typeof d === 'object' && !Array.isArray(d);
+}
+
+function _saveCache(d) {
+  try { localStorage.setItem(CACHE_KEY, JSON.stringify(d)); } catch (e) { /* ignore */ }
+}
+
+function _loadCache() {
+  try {
+    const d = JSON.parse(localStorage.getItem(CACHE_KEY) || 'null');
+    return _isValidData(d) ? d : null;
+  } catch (e) { return null; }
 }

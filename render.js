@@ -373,6 +373,16 @@ function renderTestimonials(testis) {
 
   const list = Array.isArray(testis) && testis.length ? testis : _fallbackTestimonials();
 
+  // No testimonials yet: hide the whole section and its nav links.
+  const section = document.getElementById('testimonials');
+  const hasAny = list.length > 0;
+  if (section) section.style.display = hasAny ? '' : 'none';
+  document.querySelectorAll('a[href="#testimonials"]').forEach(a => {
+    const li = a.closest('li');
+    (li || a).style.display = hasAny ? '' : 'none';
+  });
+  if (!hasAny) return;
+
   list.forEach(t => {
     const name    = _esc(t.Client_Name  || t.client_name  || 'عميل كريم');
     const comment = _esc(t.Comment      || t.comment      || '');
