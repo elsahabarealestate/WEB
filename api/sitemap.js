@@ -1,5 +1,5 @@
 // Dynamic sitemap: the 3 static pages plus one URL per listing.
-const { sb, SITE } = require('./_lib');
+const { sb, SITE, sheetProps } = require('./_lib');
 
 module.exports = async (req, res) => {
   const urls = ['/', '/properties.html', '/aerid-aqarak.html'].map((p) => SITE + p);
@@ -7,6 +7,9 @@ module.exports = async (req, res) => {
     const rows = await sb('properties?select=id&order=id.asc');
     (rows || []).forEach((r) => { if (/^\d+$/.test(String(r.id))) urls.push(`${SITE}/property/${r.id}`); });
   } catch (e) { /* serve the static pages if the database is down */ }
+  try {
+    (await sheetProps()).forEach((r) => urls.push(`${SITE}/property/${r.property_id}`));
+  } catch (e) { /* sheet unavailable: skip */ }
   const xml = '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' +
     urls.map((u) => `  <url><loc>${u}</loc></url>`).join('\n') + '\n</urlset>\n';
   res.statusCode = 200;
