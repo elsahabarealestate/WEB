@@ -47,6 +47,12 @@ function page({ title, desc, canonical, ogImage, body, jsonld, status }) {
     .facts{list-style:none;display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin:6px 0 18px}
     .facts li{background:rgba(255,255,255,.05);border:1px solid rgba(201,168,76,.15);border-radius:10px;padding:10px 14px}
     .facts span{display:block;color:rgba(255,255,255,.5);font-size:.8rem}
+    .sim-h{font-size:1.2rem;margin:28px 0 12px;color:var(--gold-light)}
+    .sim{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px}
+    .sim-card{display:block;text-decoration:none;color:inherit;background:rgba(255,255,255,.05);border:1px solid rgba(201,168,76,.15);border-radius:12px;overflow:hidden}
+    .sim-card img{width:100%;height:150px;object-fit:cover;display:block;background:#14391f}
+    .sim-t{padding:10px 12px 2px;font-size:.9rem;line-height:1.5;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+    .sim-p{padding:0 12px 12px;color:var(--gold-light);font-weight:700}
     .note{color:rgba(255,255,255,.5);font-size:.85rem;margin-top:30px}
     .empty{text-align:center;padding:90px 0}
   </style>
@@ -104,6 +110,25 @@ module.exports = async (req, res) => {
   }
 
   const { title, price, status, description, images: imgs, facts } = p;
+
+  // Similar units: same status, district and type rank first. Never blocks the page.
+  let similarHtml = '';
+  try {
+    const [sheetR, sbR] = await Promise.allSettled([sheetProps(), sb('properties?select=*&order=id.asc')]);
+    const pool = [];
+    if (sheetR.status === 'fulfilled') sheetR.value.forEach((r) => pool.push(normalizeSheet(r)));
+    if (sbR.status === 'fulfilled' && Array.isArray(sbR.value)) sbR.value.forEach((r) => pool.push(normalizeSupabase(r)));
+    const picks = pool
+      .filter((u) => u.key !== id && u.images.length)
+      .map((u) => ({ u, score: (u.status && u.status === status ? 2 : 0) + (u.district && u.district === p.district ? 2 : 0) + (u.type && u.type === p.type ? 1 : 0) }))
+      .sort((a, b) => b.score - a.score)
+      .slice(0, 3)
+      .map((x) => x.u);
+    if (picks.length) {
+      similarHtml = `<h2 class="sim-h">وحدات مشابهة</h2><div class="sim">${picks.map((u) => `<a class="sim-card" href="/property/${esc(u.key)}"><img src="${esc(img(u.images[0], 480))}" alt="${esc(u.title)}" loading="lazy"/><div class="sim-t">${esc(u.title)}</div>${u.price ? `<div class="sim-p">${esc(u.price)}</div>` : ''}</a>`).join('')}</div>`;
+    }
+  } catch (e) { /* skip the strip */ }
+
   const url = `${SITE}/property/${id}`;
   const shortDesc = (description.replace(/\s+/g, ' ').slice(0, 155) || title) + (description.length > 155 ? '…' : '');
   const pageTitle = `${title} | الصحابة العقارية`;
@@ -133,6 +158,7 @@ module.exports = async (req, res) => {
     </div>
     <div class="linkbox" dir="ltr"><input id="linkval" type="text" readonly value="${esc(url)}" aria-label="لينك الوحدة" /></div>
     ${description ? `<div class="desc">${esc(description)}</div>` : ''}
+    ${similarHtml}
     <p class="note">الصحابة العقارية، مستشار أمين مش بياع.</p>
     <script>
       document.getElementById('copy').addEventListener('click', async function () {

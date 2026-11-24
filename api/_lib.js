@@ -58,7 +58,7 @@ function normalizeSupabase(p) {
   return {
     key: String(p.id), title: (p.Title || 'عقار مميز').trim(), price: (p.Price || '').toString().trim(),
     status: (p.Property_Status || '').toString().trim(), description: (p.Description || '').toString().trim(),
-    images: images(p), facts: [],
+    images: images(p), facts: [], district: '', type: '',
   };
 }
 function normalizeSheet(p) {
@@ -76,7 +76,7 @@ function normalizeSheet(p) {
   return {
     key: String(p.property_id), title: (p.title_ar || 'عقار مميز').trim(), price: fmtPrice(p.price),
     status: p.listing_type === 'Rent' ? 'للإيجار' : 'للبيع', description: (p.description_ar || '').toString().trim(),
-    images: imgs, facts,
+    images: imgs, facts, district: String(p.district_ar || ''), type: String(p.property_detail_ar || ''),
   };
 }
 
