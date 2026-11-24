@@ -17,7 +17,7 @@
 /* ──────────────────────────────────────────────────────────
    STATIC BRAND ASSETS
    ────────────────────────────────────────────────────────── */
-const LOGO_URL        = 'https://res.cloudinary.com/daicsoapy/image/upload/q_auto/f_auto/v1777700851/Picture5_i6btgv.gif';
+const LOGO_URL        = 'https://res.cloudinary.com/daicsoapy/image/upload/w_320,q_auto,f_auto/v1777700851/Picture5_i6btgv.gif';
 const FALLBACK_IMG    = 'https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=800&q=80';
 const CONTACT_SECTION = '#contact';
 const PROPERTIES_URL  = 'properties.html';
