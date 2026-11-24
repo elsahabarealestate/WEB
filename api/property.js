@@ -1,6 +1,6 @@
 // One real, shareable page per listing: /property/<id>
 // Server-rendered so Google, WhatsApp and Facebook see title, price, photos and description.
-const { sb, esc, images, img, SITE, WA_NUMBER } = require('./_lib');
+const { sb, esc, img, SITE, WA_NUMBER, sheetProps, normalizeSupabase, normalizeSheet } = require('./_lib');
 
 function page({ title, desc, canonical, ogImage, body, jsonld, status }) {
   return `<!DOCTYPE html>
@@ -44,6 +44,9 @@ function page({ title, desc, canonical, ogImage, body, jsonld, status }) {
     .btn.share{background:transparent;color:var(--gold)}
     .linkbox{margin-bottom:22px}
     .linkbox input{width:100%;background:rgba(255,255,255,.05);color:rgba(255,255,255,.75);border:1px dashed rgba(201,168,76,.4);border-radius:8px;padding:10px 12px;font-size:.9rem}
+    .facts{list-style:none;display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin:6px 0 18px}
+    .facts li{background:rgba(255,255,255,.05);border:1px solid rgba(201,168,76,.15);border-radius:10px;padding:10px 14px}
+    .facts span{display:block;color:rgba(255,255,255,.5);font-size:.8rem}
     .note{color:rgba(255,255,255,.5);font-size:.85rem;margin-top:30px}
     .empty{text-align:center;padding:90px 0}
   </style>
@@ -68,7 +71,8 @@ module.exports = async (req, res) => {
     res.end(html);
   };
 
-  if (!/^\d{1,9}$/.test(id)) {
+  const isSheet = /^PROP_\d{1,6}$/.test(id);
+  if (!isSheet && !/^\d{1,9}$/.test(id)) {
     return send(404, page({
       title: 'الوحدة غير موجودة | الصحابة العقارية', desc: 'الوحدة غير موجودة.', canonical: SITE + '/', status: 404,
       body: '<div class="empty"><h1>الوحدة دي مش موجودة</h1><p><a class="btn share" href="/">شوف كل الوحدات المتاحة</a></p></div>',
@@ -77,8 +81,14 @@ module.exports = async (req, res) => {
 
   let p;
   try {
-    const rows = await sb(`properties?select=*&id=eq.${id}&limit=1`);
-    p = rows && rows[0];
+    if (isSheet) {
+      const all = await sheetProps();
+      const row = all.find((x) => String(x.property_id) === id);
+      p = row && normalizeSheet(row);
+    } else {
+      const rows = await sb(`properties?select=*&id=eq.${id}&limit=1`);
+      p = rows && rows[0] && normalizeSupabase(rows[0]);
+    }
   } catch (e) {
     return send(503, page({
       title: 'جاري التحميل | الصحابة العقارية', desc: 'حاول مرة تانية بعد لحظات.', canonical: SITE + '/property/' + id, status: 404,
@@ -93,11 +103,7 @@ module.exports = async (req, res) => {
     }), 'public, s-maxage=60');
   }
 
-  const title = (p.Title || 'عقار مميز').trim();
-  const price = (p.Price || '').toString().trim();
-  const status = (p.Property_Status || '').toString().trim();
-  const description = (p.Description || '').toString().trim();
-  const imgs = images(p);
+  const { title, price, status, description, images: imgs, facts } = p;
   const url = `${SITE}/property/${id}`;
   const shortDesc = (description.replace(/\s+/g, ' ').slice(0, 155) || title) + (description.length > 155 ? '…' : '');
   const pageTitle = `${title} | الصحابة العقارية`;
@@ -119,6 +125,7 @@ module.exports = async (req, res) => {
     <h1>${esc(title)}</h1>
     ${status ? `<span class="status">${esc(status)}</span>` : ''}
     ${price ? `<div class="price">${esc(price)}</div>` : ''}
+    ${facts.length ? `<ul class="facts">${facts.map((f) => `<li><span>${esc(f[0])}</span><b>${esc(f[1])}</b></li>`).join('')}</ul>` : ''}
     <div class="actions">
       <a class="btn wa" href="${esc(waLink)}" target="_blank" rel="noopener">واتساب: استفسر عن الوحدة دي</a>
       <button class="btn share" id="copy" type="button">نسخ لينك الوحدة</button>

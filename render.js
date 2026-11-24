@@ -186,7 +186,7 @@ function renderPropertiesPage(props) {
         ${detail ? `<span class="card-badge detail">${detail}</span>` : ''}
       </div>
       <div class="card-body">
-        <div class="card-title">${title}</div>
+        <a class="card-title" href="/property/${_esc(String(prop.property_id || ''))}" style="display:block">${title}</a>
         <div class="card-meta">
           ${district ? `<span><i class="fas fa-location-dot"></i> ${district}</span>` : ''}
           ${finishing ? `<span><i class="fas fa-hammer"></i> ${finishing}</span>` : ''}
@@ -233,6 +233,18 @@ function renderPropertiesPage(props) {
  * Opens the premium modal (desktop) or bottom sheet (mobile)
  * with full property details: image gallery, specs, description.
  */
+function copyUnitLink(id, btn) {
+  const url = 'https://www.elsahaba.homes/property/' + id;
+  const done = (ok) => {
+    const old = btn.innerHTML;
+    btn.textContent = ok ? 'تم النسخ ✓' : url;
+    setTimeout(() => { btn.innerHTML = old; }, 2500);
+  };
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(url).then(() => done(true), () => done(false));
+  } else { done(false); }
+}
+
 function openPropertyModal(index) {
   const prop = window._filteredProperties?.[index];
   if (!prop) return;
@@ -317,9 +329,12 @@ function openPropertyModal(index) {
 
     <!-- CTA Buttons -->
     <div class="modal-actions">
-      <a class="modal-cta-primary" href="https://wa.me/+201227164595?text=مرحباً، أنا مهتم بالوحدة: ${encodeURIComponent(title + ' (')}${encodeURIComponent(propertyId)}${encodeURIComponent(')')}" target="_blank" rel="noopener">
+      <a class="modal-cta-primary" href="https://wa.me/201227164595?text=${encodeURIComponent('مرحباً، أنا مهتم بالوحدة: ' + (prop.title_ar || '') + ' (' + (prop.property_id || '') + ')\nhttps://www.elsahaba.homes/property/' + (prop.property_id || ''))}" target="_blank" rel="noopener">
         <i class="fab fa-whatsapp"></i> استفسر عبر واتساب
       </a>
+      <button type="button" class="modal-cta-secondary" style="cursor:pointer" onclick="window.ElSahabaRender.copyUnitLink('${propertyId}', this)">
+        <i class="fas fa-link"></i> نسخ لينك الوحدة
+      </button>
       <a class="modal-cta-secondary" href="tel:+201227164595">
         <i class="fas fa-phone"></i> اتصل بنا
       </a>
@@ -517,4 +532,5 @@ window.ElSahabaRender = {
   renderPropertiesPage,
   renderTestimonials,
   openPropertyModal,
+  copyUnitLink,
 };
