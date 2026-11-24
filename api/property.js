@@ -87,6 +87,7 @@ module.exports = async (req, res) => {
     }), 'public, s-maxage=60');
   }
 
+  const poolPromise = Promise.allSettled([sheetProps(), sb('properties?select=*&order=id.asc')]);
   let p;
   try {
     if (isSheet) {
@@ -116,7 +117,7 @@ module.exports = async (req, res) => {
   // Similar units: same status, district and type rank first. Never blocks the page.
   let similarHtml = '';
   try {
-    const [sheetR, sbR] = await Promise.allSettled([sheetProps(), sb('properties?select=*&order=id.asc')]);
+    const [sheetR, sbR] = await poolPromise;
     const pool = [];
     if (sheetR.status === 'fulfilled') sheetR.value.forEach((r) => pool.push(normalizeSheet(r)));
     if (sbR.status === 'fulfilled' && Array.isArray(sbR.value)) sbR.value.forEach((r) => pool.push(normalizeSupabase(r)));
