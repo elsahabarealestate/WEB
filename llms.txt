@@ -1,0 +1,17 @@
+# الصحابة العقارية (El Sahaba Real Estate)
+
+> Egyptian real estate agency. Apartments, offices, chalets and hotel units for sale and rent in Giza (Haram, Faisal, Maryoutia), Cairo and Ain Sokhna. Website language: Arabic.
+
+Contact: WhatsApp +201227164595 (https://wa.me/201227164595)
+Website: https://www.elsahaba.homes/
+
+## Pages
+- [Home and featured units](https://www.elsahaba.homes/)
+- [All available units](https://www.elsahaba.homes/properties.html)
+- [Sell or list your property with us](https://www.elsahaba.homes/aerid-aqarak.html)
+- [Full list of unit pages (sitemap)](https://www.elsahaba.homes/sitemap.xml)
+
+## Notes
+- Every unit has its own page at https://www.elsahaba.homes/property/<id>, with price, photos, description and a WhatsApp inquiry link.
+- Prices are in Egyptian pounds (EGP). Listings change often, so check the unit page for the current status.
+- Social: https://www.facebook.com/profile.php?id=61589100016014, https://www.instagram.com/elsahaba.real.estate/, https://www.tiktok.com/@elsahaba.real.estate
