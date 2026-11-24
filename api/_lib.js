@@ -37,12 +37,35 @@ function img(url, w) {
 // The main inventory (properties.html) lives in a Google Apps Script endpoint (a Google Sheet).
 const GAS_URL = 'https://script.google.com/macros/s/AKfycbzg4uUlhw_LuVpQQPIIukb90nkOpQ8H-DR8CuxaJpkcD0BN6baoYUWWoJVMNvKWv0t4/exec';
 
+// In-memory cache (per warm serverless instance): the Apps Script endpoint takes ~2s per call, so
+// reuse the last good answer for 2 minutes, share one in-flight request, and fall back to the
+// last good answer (even if old) when the sheet is slow or down.
+let _sheet = { at: 0, data: null, inflight: null };
+const SHEET_TTL = 120 * 1000;
+
 async function sheetProps() {
-  const r = await fetch(GAS_URL, { redirect: 'follow' });
-  if (!r.ok) throw new Error('sheet ' + r.status);
-  const d = await r.json();
-  const list = Array.isArray(d) ? d : (d && d.properties) || [];
-  return list.filter((p) => p && /^PROP_\d+$/.test(String(p.property_id || '')));
+  const now = Date.now();
+  if (_sheet.data && now - _sheet.at < SHEET_TTL) return _sheet.data;
+  if (!_sheet.inflight) {
+    _sheet.inflight = (async () => {
+      const ctl = new AbortController();
+      const t = setTimeout(() => ctl.abort(), 8000);
+      try {
+        const r = await fetch(GAS_URL, { redirect: 'follow', signal: ctl.signal });
+        if (!r.ok) throw new Error('sheet ' + r.status);
+        const d = await r.json();
+        const list = (Array.isArray(d) ? d : (d && d.properties) || [])
+          .filter((p) => p && /^PROP_\d+$/.test(String(p.property_id || '')));
+        _sheet = { at: Date.now(), data: list, inflight: null };
+        return list;
+      } catch (e) {
+        if (_sheet.data) { _sheet.inflight = null; return _sheet.data; }
+        _sheet.inflight = null;
+        throw e;
+      } finally { clearTimeout(t); }
+    })();
+  }
+  return _sheet.inflight;
 }
 
 function fmtPrice(raw) {
