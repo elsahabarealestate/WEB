@@ -31,6 +31,23 @@
     .mut{color:var(--mut);font-size:.8rem}
     svg{width:100%;height:auto;display:block}
     .hide{display:none}
+    .tabs{display:flex;gap:8px;margin-bottom:14px}
+    .tabs button{background:#0c2012!important;color:var(--txt)!important;border:1px solid var(--line)!important;padding:9px 18px;border-radius:8px;font:inherit}
+    .tabs button.on{background:var(--gold)!important;color:#0a1a0e!important}
+    .row{display:flex;gap:8px;align-items:center;justify-content:space-between;padding:9px 0;border-bottom:1px solid rgba(255,255,255,.06)}
+    .row .ti{flex:1;min-width:0}.row .ti b{display:block;font-size:.9rem;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+    .row.off{opacity:.55}
+    .sm{padding:7px 12px!important;font-size:.8rem;border-radius:7px}
+    .g2{background:#0c2012!important;color:var(--txt)!important;border:1px solid var(--line)!important}
+    form label{display:block;font-size:.8rem;color:var(--mut);margin:10px 0 4px}
+    form input,form select,form textarea{width:100%;font:inherit;padding:10px 12px;border-radius:8px;border:1px solid var(--line);background:#0c2012;color:var(--txt)}
+    form textarea{min-height:120px}
+    .f2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+    .thumbs{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+    .thumbs div{position:relative;width:78px;height:78px;border-radius:8px;overflow:hidden;border:1px solid var(--line)}
+    .thumbs img{width:100%;height:100%;object-fit:cover}
+    .thumbs button{position:absolute;top:2px;left:2px;width:22px;height:22px;border-radius:50%;padding:0;font-size:.8rem;line-height:1}
+    .ok{color:#7be28a;font-size:.9rem;margin-top:8px;min-height:1.3em}
     .tag{display:inline-block;background:rgba(201,168,76,.15);border-radius:6px;padding:1px 8px;font-size:.78rem;margin:2px}
   </style>
 </head>
@@ -53,6 +70,8 @@
         <button id="out" type="button">خروج</button>
       </div>
     </div>
+    <div class="tabs"><button type="button" id="tab-stats" class="on">الإحصائيات</button><button type="button" id="tab-units">الوحدات</button></div>
+    <div id="pane-stats">
     <div class="kpis" id="kpis"></div>
     <div class="card"><h2>الزيارات والضغطات على واتساب يوميًا</h2><div id="chart"></div></div>
     <div class="grid">
@@ -66,6 +85,43 @@
       <div class="card"><h2>الفلاتر المستخدمة</h2><div id="filters"></div></div>
     </div>
     <p class="mut" id="foot"></p>
+    </div>
+    <div id="pane-units" class="hide">
+      <div class="bar"><span class="mut" id="units-note"></span><button type="button" id="new-unit">+ وحدة جديدة</button></div>
+      <div class="card hide" id="unit-form-card">
+        <h2 id="uf-title">وحدة جديدة</h2>
+        <form id="unit-form" onsubmit="return false">
+          <input type="hidden" id="uf-id" />
+          <label>عنوان الإعلان *</label><input id="uf-title_ar" maxlength="200" />
+          <div class="f2">
+            <div><label>النوع</label><select id="uf-listing_type"><option value="Sale">بيع</option><option value="Rent">إيجار</option></select></div>
+            <div><label>السعر (جنيه) *</label><input id="uf-price" inputmode="numeric" /></div>
+          </div>
+          <div class="f2">
+            <div><label>التصنيف</label><input id="uf-main_category" list="dl-main_category" /></div>
+            <div><label>نوع الوحدة</label><input id="uf-property_detail_ar" list="dl-property_detail_ar" /></div>
+          </div>
+          <div class="f2">
+            <div><label>المدينة (إنجليزي)</label><input id="uf-city_en" list="dl-city_en" /></div>
+            <div><label>المنطقة</label><input id="uf-district_ar" list="dl-district_ar" /></div>
+          </div>
+          <div class="f2">
+            <div><label>التشطيب</label><input id="uf-finishing_status_ar" list="dl-finishing_status_ar" /></div>
+            <div class="f2"><div><label>الغرف</label><input id="uf-rooms" inputmode="numeric" /></div><div><label>الحمامات</label><input id="uf-bathrooms" inputmode="numeric" /></div></div>
+          </div>
+          <label>الوصف</label><textarea id="uf-description_ar" maxlength="4000"></textarea>
+          <label>الصور (أول صورة هي الغلاف، حد أقصى ١٠)</label>
+          <input id="uf-files" type="file" accept="image/*" multiple />
+          <div class="thumbs" id="uf-thumbs"></div>
+          <div class="mut" id="uf-up"></div>
+          <div class="bar" style="margin-top:14px"><button type="button" id="uf-save">حفظ</button><button type="button" class="g2" id="uf-cancel">إلغاء</button></div>
+          <div class="err" id="uf-err"></div><div class="ok" id="uf-ok"></div>
+          <datalist id="dl-main_category"></datalist><datalist id="dl-property_detail_ar"></datalist><datalist id="dl-city_en"></datalist><datalist id="dl-district_ar"></datalist><datalist id="dl-finishing_status_ar"></datalist>
+        </form>
+      </div>
+      <div class="card" id="units-list"></div>
+      <p class="mut">الإخفاء مش بيمسح الوحدة: بيشيلها من الموقع بس، وتقدر ترجعها في أي وقت. أي تعديل بيتسجل في تاب changes في الشيت وفي سجل نسخ جوجل.</p>
+    </div>
   </div>
 </div>
 <script>
@@ -75,6 +131,8 @@
   var UNITS_URL = 'https://script.google.com/macros/s/AKfycbzg4uUlhw_LuVpQQPIIukb90nkOpQ8H-DR8CuxaJpkcD0BN6baoYUWWoJVMNvKWv0t4/exec';
   var SB = 'https://uevycvzopnyxweecoqkl.supabase.co/rest/v1/properties?select=id,Title&order=id.asc';
   var SBK = 'sb_publishable_OyDCxuMjNfAunWNlLSQpFg_-cgrPVPx';
+  var WRITER = ''; // units-writer Apps Script /exec URL
+  var CLOUD = 'dyuzahqol', PRESET = 'elsahaba_properties';
   var pass = '', meta = null; // pass is kept in memory only
   var $ = function (id) { return document.getElementById(id); };
   var n = function (x) { return Number(x || 0).toLocaleString('en-US'); };
@@ -152,6 +210,89 @@
     var m = { auth: 'كلمة السر غلط', locked: 'محاولات كتير غلط. استنى ١٥ دقيقة وجرب تاني' }[e.message] || 'مش قادر أوصل للبيانات دلوقتي';
     pass = ''; $('login').classList.remove('hide'); $('app').classList.add('hide'); $('err').textContent = m;
   }
+  /* ---------- Units tab ---------- */
+  var units = [], images = [], cols = ['title_ar','listing_type','price','main_category','property_detail_ar','city_en','district_ar','finishing_status_ar','rooms','bathrooms','description_ar'];
+  function wpost(body) {
+    body.p = pass;
+    return fetch(WRITER, { method: 'POST', headers: { 'Content-Type': 'text/plain' }, body: JSON.stringify(body) }).then(function (r) { return r.json(); });
+  }
+  function isOff(u) { var v = String(u.active == null ? '' : u.active).trim().toLowerCase(); return ['false', 'no', '0', 'hidden', 'مخفي'].indexOf(v) > -1; }
+  function loadUnits() {
+    if (!WRITER) { $('units-note').textContent = 'إدارة الوحدات لسه متربطتش'; $('units-list').innerHTML = '<p class="mut">محتاجة تفعيل سكريبت إدارة الوحدات.</p>'; $('new-unit').classList.add('hide'); return Promise.resolve(); }
+    $('units-note').textContent = 'جارٍ التحميل…';
+    return wpost({ action: 'list' }).then(function (r) {
+      if (!r.ok) throw new Error(r.error);
+      units = r.units.filter(function (u) { return u.property_id; });
+      $('units-note').textContent = units.length + ' وحدة';
+      ['main_category','property_detail_ar','city_en','district_ar','finishing_status_ar'].forEach(function (k) {
+        var s = {}; units.forEach(function (u) { if (u[k]) s[u[k]] = 1; });
+        $('dl-' + k).innerHTML = Object.keys(s).map(function (v) { return '<option value="' + esc(v) + '">'; }).join('');
+      });
+      $('units-list').innerHTML = units.length ? units.slice().reverse().map(function (u) {
+        var off = isOff(u);
+        return '<div class="row' + (off ? ' off' : '') + '"><div class="ti"><b>' + esc(u.title_ar) + '</b><span class="mut">' + esc(u.property_id) + ' · ' + (u.listing_type === 'Rent' ? 'إيجار' : 'بيع') + ' · ' + n(u.price) + ' ج' + (off ? ' · مخفية' : '') + '</span></div>' +
+          '<button type="button" class="sm g2" data-edit="' + esc(u.property_id) + '">تعديل</button>' +
+          '<button type="button" class="sm" data-toggle="' + esc(u.property_id) + '" data-to="' + (off ? '1' : '0') + '">' + (off ? 'إظهار' : 'إخفاء') + '</button></div>';
+      }).join('') : '<p class="mut">لسه مفيش وحدات</p>';
+    });
+  }
+  function showForm(u) {
+    $('unit-form-card').classList.remove('hide'); $('uf-err').textContent = ''; $('uf-ok').textContent = '';
+    $('uf-title').textContent = u ? 'تعديل ' + u.property_id : 'وحدة جديدة';
+    $('uf-id').value = u ? u.property_id : '';
+    cols.forEach(function (k) { $('uf-' + k).value = u && u[k] != null ? u[k] : (k === 'listing_type' ? 'Sale' : ''); });
+    images = []; if (u) for (var i = 1; i <= 10; i++) if (u['image_' + i]) images.push(u['image_' + i]);
+    drawThumbs(); $('unit-form-card').scrollIntoView({ behavior: 'smooth' });
+  }
+  function drawThumbs() {
+    $('uf-thumbs').innerHTML = images.map(function (s, i) { return '<div><img src="' + esc(s.replace('/upload/', '/upload/w_160,c_fill,h_160/')) + '" alt=""><button type="button" data-rm="' + i + '">×</button></div>'; }).join('');
+  }
+  function upload(file) {
+    return new Promise(function (res, rej) {
+      var fd = new FormData(); fd.append('file', file); fd.append('upload_preset', PRESET);
+      var x = new XMLHttpRequest(); x.open('POST', 'https://api.cloudinary.com/v1_1/' + CLOUD + '/image/upload');
+      x.onload = function () { try { var j = JSON.parse(x.responseText); j.secure_url ? res(j.secure_url) : rej(new Error('upload')); } catch (e) { rej(e); } };
+      x.onerror = function () { rej(new Error('upload')); }; x.send(fd);
+    });
+  }
+  function saveUnit() {
+    $('uf-err').textContent = ''; $('uf-ok').textContent = '';
+    var u = { property_id: $('uf-id').value };
+    cols.forEach(function (k) { u[k] = $('uf-' + k).value; });
+    for (var i = 1; i <= 10; i++) u['image_' + i] = images[i - 1] || '';
+    if (!u.title_ar.trim()) { $('uf-err').textContent = 'اكتب عنوان الإعلان'; return; }
+    if (!String(u.price).replace(/[^\d]/g, '')) { $('uf-err').textContent = 'اكتب السعر'; return; }
+    $('uf-save').disabled = true;
+    wpost({ action: 'save', unit: u }).then(function (r) {
+      if (!r.ok) throw new Error(r.error);
+      $('uf-ok').textContent = 'تم الحفظ: ' + r.id + '. هتظهر على الموقع خلال دقيقتين.';
+      return loadUnits();
+    }).catch(function (e) { $('uf-err').textContent = 'محصلش حفظ (' + e.message + ')'; }).then(function () { $('uf-save').disabled = false; });
+  }
+  $('new-unit').addEventListener('click', function () { showForm(null); });
+  $('uf-cancel').addEventListener('click', function () { $('unit-form-card').classList.add('hide'); });
+  $('uf-save').addEventListener('click', saveUnit);
+  $('uf-thumbs').addEventListener('click', function (e) { var i = e.target.getAttribute('data-rm'); if (i != null) { images.splice(Number(i), 1); drawThumbs(); } });
+  $('uf-files').addEventListener('change', function () {
+    var files = Array.prototype.slice.call(this.files).slice(0, 10 - images.length); this.value = '';
+    if (!files.length) return;
+    $('uf-up').textContent = 'جارٍ رفع ' + files.length + ' صورة…';
+    files.reduce(function (p, f) { return p.then(function () { return upload(f).then(function (url) { images.push(url); drawThumbs(); }); }); }, Promise.resolve())
+      .then(function () { $('uf-up').textContent = ''; }, function () { $('uf-up').textContent = 'فشل رفع صورة. جرب تاني.'; });
+  });
+  $('units-list').addEventListener('click', function (e) {
+    var ed = e.target.getAttribute('data-edit'), tg = e.target.getAttribute('data-toggle');
+    if (ed) showForm(units.filter(function (u) { return u.property_id === ed; })[0]);
+    if (tg) { e.target.disabled = true; wpost({ action: 'active', id: tg, active: e.target.getAttribute('data-to') === '1' }).then(loadUnits).catch(function () { e.target.disabled = false; }); }
+  });
+  function tab(which) {
+    $('pane-stats').classList.toggle('hide', which !== 'stats'); $('pane-units').classList.toggle('hide', which !== 'units');
+    $('tab-stats').classList.toggle('on', which === 'stats'); $('tab-units').classList.toggle('on', which === 'units');
+    if (which === 'units') loadUnits().catch(function () { $('units-note').textContent = 'مش قادر أحمل الوحدات (كلمة السر أو الاتصال)'; });
+  }
+  $('tab-stats').addEventListener('click', function () { tab('stats'); });
+  $('tab-units').addEventListener('click', function () { tab('units'); });
+
   $('go').addEventListener('click', function () { if (!ENDPOINT) { $('err').textContent = 'اللوحة لسه متربطتش بقاعدة الإحصائيات'; return; } pass = $('pass').value; $('pass').value = ''; load().catch(fail); });
   $('pass').addEventListener('keydown', function (e) { if (e.key === 'Enter') $('go').click(); });
   $('reload').addEventListener('click', function () { load().catch(fail); });
