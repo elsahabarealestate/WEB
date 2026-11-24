@@ -334,7 +334,6 @@ function _validateForm() {
   mustFill('f-rooms',    'err-rooms',    'اختر عدد الغرف');
   mustFill('f-baths',    'err-baths',    'اختر عدد الحمامات');
   mustFill('f-desc',     'err-desc',     'وصف الوحدة مطلوب');
-  mustFill('f-location', 'err-location', 'موقع الوحدة مطلوب');
 
   // Listing type (hidden input)
   const listing = document.getElementById('f-listing').value;
