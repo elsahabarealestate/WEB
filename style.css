@@ -867,3 +867,12 @@ footer { background: rgba(4, 12, 6, 0.99); border-top: 1px solid var(--glass-bor
     text-align: center;
   }
 }
+
+/* Mobile: keep the floating buttons from covering card prices/CTAs */
+@media (max-width: 680px) {
+  .float-wa-btn { width: 48px; height: 48px; }
+  .float-wa { bottom: 16px; left: 12px; }
+  .float-cta { bottom: 16px; right: 12px; }
+  body { padding-bottom: 76px; }
+  .card-footer { padding-bottom: 14px; }
+}

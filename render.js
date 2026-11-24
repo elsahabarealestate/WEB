@@ -17,7 +17,7 @@
 /* ──────────────────────────────────────────────────────────
    STATIC BRAND ASSETS
    ────────────────────────────────────────────────────────── */
-const LOGO_URL        = 'https://res.cloudinary.com/daicsoapy/image/upload/q_auto/f_auto/v1777700851/Picture5_i6btgv.gif';
+const LOGO_URL        = 'https://res.cloudinary.com/daicsoapy/image/upload/w_320,q_auto,f_auto/v1777700851/Picture5_i6btgv.gif';
 const FALLBACK_IMG    = 'https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=800&q=80';
 const CONTACT_SECTION = '#contact';
 const PROPERTIES_URL  = 'properties.html';
@@ -438,13 +438,25 @@ function _initTestiSwiper() {
    PRIVATE HELPERS
    ────────────────────────────────────────────────────────── */
 
+
+/** Ask Cloudinary for a smaller, auto-format version of an image (cards). */
+function _optimizeImg(url, width) {
+  try {
+    if (typeof url === 'string' && url.indexOf('res.cloudinary.com') !== -1 &&
+        url.indexOf('/image/upload/') !== -1 && url.indexOf('/image/upload/w_') === -1) {
+      return url.replace('/image/upload/', '/image/upload/w_' + (width || 640) + ',c_limit,q_auto,f_auto/');
+    }
+  } catch (e) { /* fall through */ }
+  return url;
+}
+
 /** Extract Image1…Image10 from Supabase-style property object */
 function _extractImages(prop) {
   const images = [];
   for (let n = 1; n <= 10; n++) {
     const url = prop[`Image${n}`] || prop[`image${n}`] || '';
     if (url && url !== 'NaN' && String(url).trim()) {
-      images.push(String(url).trim());
+      images.push(_optimizeImg(String(url).trim()));
     }
   }
   return images.length ? images : [FALLBACK_IMG];
@@ -456,7 +468,7 @@ function _extractImagesFromSheet(prop) {
   for (let n = 1; n <= 10; n++) {
     const url = prop[`image_${n}`] || '';
     if (url && url !== 'NaN' && String(url).trim()) {
-      images.push(String(url).trim());
+      images.push(_optimizeImg(String(url).trim()));
     }
   }
   return images.length ? images : [FALLBACK_IMG];

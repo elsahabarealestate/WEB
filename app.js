@@ -41,10 +41,21 @@ async function _boot() {
   bindScrollReveal();
   bindFloatButtons();
 
-  /* ── Step 2 — Start data fetch with progress feedback ── */
-  setLoaderProgress(10);
-  setLoaderStatus('جارٍ تحميل البيانات…');
+  /* ── Step 2 — Paint the page shell right away (no waiting on data) ── */
+  const renderers = { renderVideoSection, renderProperties, renderTestimonials };
+  let painted = false;
 
+  const cached = _loadCache();
+  if (cached) {
+    // Returning visitor: show last-good data instantly, refresh in background.
+    try { _applyData(cached, renderers); painted = true; } catch (e) { console.error(e); }
+  } else {
+    _showSkeletons();
+  }
+  setLoaderProgress(100);
+  setTimeout(hideLoader, painted ? 150 : 350);
+
+  /* ── Step 3 — Fetch fresh data in the background (8s timeout) ── */
   let data = null;
   try {
     data = await _withTimeout(fetchSiteData(), FETCH_TIMEOUT_MS);
@@ -54,41 +65,23 @@ async function _boot() {
 
   if (_isValidData(data)) {
     _saveCache(data);
-  } else {
-    // Failed, timed out, or returned nothing: use last good data if we have it.
-    const cached = _loadCache();
-    if (cached) {
-      console.warn('[ElSahaba] Using cached data.');
-      data = cached;
-    } else {
-      console.warn('[ElSahaba] No data available, showing fallback content.');
-      setLoaderProgress(100);
-      setLoaderStatus('جاهز');
-      try { _applyFallback(renderTestimonials); } catch (e) { console.error(e); }
-      setTimeout(hideLoader, 700);
-      return;
-    }
-  }
-  setLoaderProgress(60);
-  setLoaderStatus('جارٍ بناء الصفحة…');
-
-  /* ── Step 3 — Render data into the page ── */
-  try {
-    _applyData(data, { renderVideoSection, renderProperties, renderTestimonials });
-  } catch (err) {
-    console.error('[ElSahaba] Render failed.', err);
+    try { _applyData(data, renderers); } catch (err) { console.error('[ElSahaba] Render failed.', err); }
+  } else if (!painted) {
+    console.warn('[ElSahaba] No data available, showing fallback content.');
+    try { _applyFallback(renderTestimonials); } catch (e) { console.error(e); }
   }
 
-  setLoaderProgress(100);
-  setLoaderStatus('جاهز!');
-
-  /* ── Step 4 — Reveal page (short delay for final paint) ── */
-  setTimeout(hideLoader, 700);
-
-  /* ── Step 5 — Re-run scroll reveal for dynamically added cards ── */
+  /* ── Step 4 — Re-run scroll reveal for dynamically added cards ── */
   requestAnimationFrame(() => {
     setTimeout(bindScrollReveal, 200);
   });
+}
+
+function _showSkeletons() {
+  const grid = document.getElementById('props-grid');
+  if (!grid) return;
+  const card = '<div class="skeleton-card"><div class="skeleton-img"></div><div class="skeleton-body"><div class="skeleton-title"></div><div class="skeleton-line"></div><div class="skeleton-line short"></div><div class="skeleton-footer"></div></div></div>';
+  grid.innerHTML = card + card + card;
 }
 
 
