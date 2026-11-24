@@ -14,3 +14,18 @@ Do Not Track is respected. Events stored: page views, unit views, WhatsApp/call/
 referrer site, device type (mobile/tablet/desktop), language.
 
 Tests: `node tests/analytics.test.js` (runs the script logic with mocked Google services).
+
+# Units writer setup (needed for add / edit / hide from the dashboard)
+
+Separate from your existing read-only units script, so the live site is never at risk.
+
+1. Open your UNITS Google Sheet (the one the website reads).
+2. Extensions, Apps Script. Click the + next to Files, add a new script file, and paste `units-writer.gs`
+   (the owner copy with your passphrase hash filled in). Do not touch the existing files.
+3. Deploy, New deployment, Web app. Execute as: Me. Who has access: Anyone. Authorize.
+   (A new deployment is a new URL. The existing one that feeds the website stays as it is.)
+4. Send the /exec URL to the site developer.
+
+Safety: nothing is ever deleted. Hiding sets the `active` column to FALSE. Every add/edit/hide stores the previous row in a
+tab called "changes", and Google Sheets version history also keeps every earlier state.
+Tests: `node tests/units-writer.test.js`.
