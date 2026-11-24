@@ -37,6 +37,13 @@ function img(url, w) {
 // The main inventory (properties.html) lives in a Google Apps Script endpoint (a Google Sheet).
 const GAS_URL = 'https://script.google.com/macros/s/AKfycbzg4uUlhw_LuVpQQPIIukb90nkOpQ8H-DR8CuxaJpkcD0BN6baoYUWWoJVMNvKWv0t4/exec';
 
+// A unit is hidden when its optional `active` column says so (FALSE / no / 0 / hidden / مخفي / مخفية).
+// A missing column or empty cell means visible, so existing sheets keep working unchanged.
+function isHidden(p) {
+  const v = String(p && p.active != null ? p.active : '').trim().toLowerCase();
+  return ['false', 'no', '0', 'hidden', 'hide', 'مخفي', 'مخفية', 'اخفاء', 'إخفاء'].indexOf(v) !== -1;
+}
+
 // In-memory cache (per warm serverless instance): the Apps Script endpoint takes ~2s per call, so
 // reuse the last good answer for 2 minutes, share one in-flight request, and fall back to the
 // last good answer (even if old) when the sheet is slow or down.
@@ -55,7 +62,7 @@ async function sheetProps() {
         if (!r.ok) throw new Error('sheet ' + r.status);
         const d = await r.json();
         return (Array.isArray(d) ? d : (d && d.properties) || [])
-          .filter((p) => p && /^PROP_\d+$/.test(String(p.property_id || '')));
+          .filter((p) => p && /^PROP_\d+$/.test(String(p.property_id || '')) && !isHidden(p));
       };
       const ctls = [new AbortController(), new AbortController()];
       const timers = [];
@@ -118,4 +125,4 @@ function normalizeSheet(p) {
   };
 }
 
-module.exports = { sb, esc, images, img, SITE, WA_NUMBER, sheetProps, normalizeSupabase, normalizeSheet };
+module.exports = { isHidden, sb, esc, images, img, SITE, WA_NUMBER, sheetProps, normalizeSupabase, normalizeSheet };

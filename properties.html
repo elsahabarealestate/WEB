@@ -421,7 +421,10 @@
         setLoaderProgress(70);
 
         // Store all properties globally for client-side filtering
-        window._allProperties = data.properties || [];
+        // Hide units whose optional `active` column says FALSE / no / 0 / hidden / مخفي
+        const _hiddenVals = ['false', 'no', '0', 'hidden', 'hide', 'مخفي', 'مخفية', 'اخفاء', 'إخفاء'];
+        window._allProperties = (data.properties || []).filter(p =>
+          _hiddenVals.indexOf(String(p && p.active != null ? p.active : '').trim().toLowerCase()) === -1);
         window._filteredProperties = [...window._allProperties];
 
         // Hide skeleton, show grid
