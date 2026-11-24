@@ -135,6 +135,21 @@
 
       <!-- Dropdown Filters -->
       <div class="filter-dropdowns">
+        <div class="filter-select-wrap filter-search-wrap">
+          <label for="filter-search">بحث</label>
+          <input id="filter-search" type="search" placeholder="ابحث بالمنطقة أو الوصف..." oninput="window.ElSahabaFilters.setQuery(this.value)">
+        </div>
+
+        <div class="filter-select-wrap">
+          <label for="filter-min-price">السعر من (ج.م)</label>
+          <input id="filter-min-price" type="text" inputmode="numeric" placeholder="0" oninput="window.ElSahabaFilters.setMinPrice(this.value)">
+        </div>
+
+        <div class="filter-select-wrap">
+          <label for="filter-max-price">السعر إلى (ج.م)</label>
+          <input id="filter-max-price" type="text" inputmode="numeric" placeholder="بدون حد" oninput="window.ElSahabaFilters.setMaxPrice(this.value)">
+        </div>
+
         <div class="filter-select-wrap">
           <label for="filter-sort">الترتيب</label>
           <select id="filter-sort" onchange="window.ElSahabaFilters.setSort(this.value)">

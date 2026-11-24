@@ -180,6 +180,9 @@ const FilterState = {
   status   : '',     // finishing_status_ar
   detail   : '',     // property_detail_ar
   rooms    : '',     // rooms count
+  q        : '',     // free-text search
+  minPrice : '',
+  maxPrice : '',
 };
 
 function _applyFilters() {
@@ -236,6 +239,18 @@ function _applyFilters() {
       result = result.filter(p => (p.rooms || 0) === targetRooms);
     }
   }
+
+  // Free-text search (title, district, detail, description)
+  if (FilterState.q) {
+    const q = FilterState.q.toLowerCase();
+    result = result.filter(p => [p.title_ar, p.district_ar, p.property_detail_ar, p.city_en, p.finishing_status_ar, p.description_ar, p.property_id]
+      .some(v => String(v || '').toLowerCase().includes(q)));
+  }
+
+  // Price range
+  const minP = Number(FilterState.minPrice), maxP = Number(FilterState.maxPrice);
+  if (minP) result = result.filter(p => (Number(p.price) || 0) >= minP);
+  if (maxP) result = result.filter(p => (Number(p.price) || 0) <= maxP);
 
   // Sort
   if (FilterState.sort === 'price_asc') {
@@ -307,6 +322,21 @@ const ElSahabaFilters = {
     _applyFilters();
   },
 
+  setQuery(value) {
+    FilterState.q = String(value || '').trim();
+    _applyFilters();
+  },
+
+  setMinPrice(value) {
+    FilterState.minPrice = String(value || '').replace(/[^\d]/g, '');
+    _applyFilters();
+  },
+
+  setMaxPrice(value) {
+    FilterState.maxPrice = String(value || '').replace(/[^\d]/g, '');
+    _applyFilters();
+  },
+
   resetAll() {
     FilterState.category = null;
     FilterState.listing  = null;
@@ -316,6 +346,8 @@ const ElSahabaFilters = {
     FilterState.status   = '';
     FilterState.detail   = '';
     FilterState.rooms    = '';
+    FilterState.q = ''; FilterState.minPrice = ''; FilterState.maxPrice = '';
+    ['filter-search', 'filter-min-price', 'filter-max-price'].forEach(id => { const el = document.getElementById(id); if (el) el.value = ''; });
 
     // Reset UI controls
     document.getElementById('filter-sort')?.value && (document.getElementById('filter-sort').value = '');
