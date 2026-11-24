@@ -48,21 +48,36 @@ async function sheetProps() {
   if (_sheet.data && now - _sheet.at < SHEET_TTL) return _sheet.data;
   if (!_sheet.inflight) {
     _sheet.inflight = (async () => {
-      const ctl = new AbortController();
-      const t = setTimeout(() => ctl.abort(), 8000);
-      try {
+      // Hedged request: if the first call has not answered after 3.5s, start a second one
+      // and take whichever succeeds first. Hard stop at 9s.
+      const one = async (ctl) => {
         const r = await fetch(GAS_URL, { redirect: 'follow', signal: ctl.signal });
         if (!r.ok) throw new Error('sheet ' + r.status);
         const d = await r.json();
-        const list = (Array.isArray(d) ? d : (d && d.properties) || [])
+        return (Array.isArray(d) ? d : (d && d.properties) || [])
           .filter((p) => p && /^PROP_\d+$/.test(String(p.property_id || '')));
+      };
+      const ctls = [new AbortController(), new AbortController()];
+      const timers = [];
+      try {
+        const list = await new Promise((resolve, reject) => {
+          let failed = 0, started = 1;
+          const fail = (e) => { failed += 1; if (failed >= started && started === 2) reject(e); else if (failed >= 1 && started === 1) { launch(1); } };
+          const launch = (i) => { if (i === 1) started = 2; one(ctls[i]).then(resolve, fail); };
+          launch(0);
+          timers.push(setTimeout(() => { if (started === 1) launch(1); }, 3500));
+          timers.push(setTimeout(() => reject(new Error('sheet timeout')), 9000));
+        });
         _sheet = { at: Date.now(), data: list, inflight: null };
         return list;
       } catch (e) {
-        if (_sheet.data) { _sheet.inflight = null; return _sheet.data; }
         _sheet.inflight = null;
+        if (_sheet.data) return _sheet.data;
         throw e;
-      } finally { clearTimeout(t); }
+      } finally {
+        timers.forEach(clearTimeout);
+        ctls.forEach((c) => { try { c.abort(); } catch (e) {} });
+      }
     })();
   }
   return _sheet.inflight;
