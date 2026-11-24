@@ -204,12 +204,16 @@ function renderPropertiesPage(props) {
             التفاصيل <i class="fas fa-arrow-left" style="margin-right:6px;font-size:0.65rem;"></i>
           </button>
         </div>
+        <a class="card-wa" target="_blank" rel="noopener"
+           href="https://wa.me/201227164595?text=${encodeURIComponent('مرحباً، أنا مهتم بالوحدة: ' + (prop.title_ar || '') + ' (' + (prop.property_id || '') + ')\nhttps://www.elsahaba.homes/property/' + (prop.property_id || ''))}">
+          <i class="fab fa-whatsapp"></i> اسأل عن الوحدة دي
+        </a>
       </div>`;
 
     // Make entire card clickable (opens modal)
     card.addEventListener('click', (e) => {
       // Don't trigger if clicking inside the swiper or action button
-      if (e.target.closest('.swiper') || e.target.closest('.card-action')) return;
+      if (e.target.closest('.swiper') || e.target.closest('.card-action') || e.target.closest('.card-wa') || e.target.closest('.card-title')) return;
       openPropertyModal(index);
     });
 

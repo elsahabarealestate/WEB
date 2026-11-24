@@ -885,3 +885,7 @@ footer { background: rgba(4, 12, 6, 0.99); border-top: 1px solid var(--glass-bor
 
 a.card-title { text-decoration: none; color: inherit; }
 a.card-title:hover { color: var(--gold-light, #e6c872); }
+
+.card-wa { display: flex; align-items: center; justify-content: center; gap: 8px; margin-top: 12px; padding: 10px 14px;
+  border-radius: 8px; background: #25d366; color: #07210f; font-weight: 700; font-size: 0.85rem; text-decoration: none; }
+.card-wa:hover { filter: brightness(1.08); }
