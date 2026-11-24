@@ -86,17 +86,16 @@ function renderProperties(props) {
       <div class="card-img-overlay"></div>
       ${badge ? `<div class="card-badge">${badge}</div>` : ''}
       <div class="card-body">
-        <div class="card-title">${title}</div>
+        <a class="card-title" href="/property/${_esc(String(prop.id || ''))}" style="display:block">${title}</a>
         <div class="card-desc">${desc}</div>
         <div class="card-footer">
           <div>
             <div class="card-price-label">السعر</div>
             <div class="card-price">${price}</div>
           </div>
-          <button class="card-action"
-            onclick="document.querySelector('${CONTACT_SECTION}').scrollIntoView({behavior:'smooth'})">
-            استفسر الآن
-          </button>
+          <a class="card-action" href="/property/${_esc(String(prop.id || ''))}" style="text-decoration:none;display:inline-block;text-align:center">
+            التفاصيل واللينك
+          </a>
         </div>
       </div>`;
 
