@@ -66,6 +66,7 @@ function page({ title, desc, canonical, ogImage, body, jsonld, status }) {
     <a class="back" href="/#properties">كل الوحدات ←</a>
   </header>
   <main>${body}</main>
+  <script src="/analytics.js" defer></script>
 </body>
 </html>`;
 }
