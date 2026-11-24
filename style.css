@@ -882,3 +882,6 @@ footer { background: rgba(4, 12, 6, 0.99); border-top: 1px solid var(--glass-bor
   body { padding-bottom: 76px; }
   .card-footer { padding-bottom: 14px; }
 }
+
+a.card-title { text-decoration: none; color: inherit; }
+a.card-title:hover { color: var(--gold-light, #e6c872); }
