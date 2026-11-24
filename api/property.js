@@ -7,6 +7,8 @@ function page({ title, desc, canonical, ogImage, body, jsonld, status }) {
 <html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8" />
+  <link rel="icon" href="/favicon.ico" sizes="48x48" />
+  <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>${esc(title)}</title>
   <meta name="description" content="${esc(desc)}" />
